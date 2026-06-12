@@ -1,0 +1,3964 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="Iron Frame: athletic kettlebell hypertrophy, conditioning en recovery in één installeerbare trainingsapp.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Iron Frame">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <title>Iron Frame | Athletic Kettlebell Hypertrophy</title>
+  <style>
+    :root {
+      --bg: #080808;
+      --bg-accent: #121212;
+      --surface: rgba(20, 20, 20, 0.94);
+      --surface-strong: #1b1b1b;
+      --surface-soft: #202020;
+      --text: #f1ece4;
+      --muted: #b5aea3;
+      --line: rgba(255, 126, 32, 0.18);
+      --line-strong: rgba(255, 126, 32, 0.34);
+      --shadow: 0 28px 64px rgba(0, 0, 0, 0.44);
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.30);
+      --primary: #ff7a1a;
+      --primary-strong: #ff5a00;
+      --primary-soft: rgba(255, 106, 0, 0.14);
+      --success: #81c784;
+      --warning: #ffb74d;
+      --danger: #ff8a80;
+      --accent-metal: #70685e;
+      --font-body: "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-display: "Rockwell", "Arial Black", "Aptos", serif;
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max-width: 980px;
+      --transition: 180ms ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top center, rgba(255, 90, 0, 0.18), transparent 20%),
+        radial-gradient(circle at 20% 80%, rgba(255, 140, 0, 0.10), transparent 24%),
+        linear-gradient(180deg, #050505 0%, #111111 48%, var(--bg) 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), transparent 24%),
+        radial-gradient(circle at 50% 0%, rgba(255,120,20,0.08), transparent 18%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.016) 0 1px, transparent 1px 24px);
+      opacity: 1;
+    }
+
+    .app-shell {
+      position: relative;
+      width: min(calc(100% - 28px), var(--max-width));
+      margin: 28px auto 48px;
+      z-index: 1;
+    }
+
+    .hero {
+      display: block;
+      width: 100%;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 90, 0, 0.18), transparent 24%),
+        linear-gradient(180deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
+      border: 1px solid rgba(255, 110, 32, 0.20);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px 16px;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 12px;
+      height: 10px;
+      border-top: 1px solid rgba(255, 120, 32, 0.35);
+      border-bottom: 1px solid rgba(255, 120, 32, 0.12);
+      opacity: 0.9;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 106, 0, 0.12);
+      color: #ffd8ba;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 120, 32, 0.24);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #f6eee4;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 60ch;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(28, 28, 28, 0.94);
+      border: 1px solid var(--line);
+      font-size: 0.88rem;
+      color: var(--text);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 18px;
+      padding: 7px;
+      border-radius: 24px;
+      background: rgba(18, 18, 18, 0.92);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(8px);
+    }
+
+    .tab-button {
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 16px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, #ff8b26, var(--primary-strong));
+      color: #130a05;
+      box-shadow: 0 12px 26px rgba(255, 90, 0, 0.22);
+    }
+
+    .tab-button:active,
+    .primary-button:active,
+    .secondary-button:active,
+    .nudge-button:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .view {
+      display: none;
+      margin-top: 18px;
+      animation: fadeIn 240ms ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(255, 126, 32, 0.12);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card.soft {
+      background: rgba(24, 24, 24, 0.92);
+    }
+
+    .focus-card {
+      position: relative;
+      border-color: rgba(255, 110, 32, 0.24);
+      background:
+        linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(12, 12, 12, 0.98));
+    }
+
+    .focus-card::before {
+      content: "";
+      display: block;
+      width: 108px;
+      height: 8px;
+      margin-bottom: 10px;
+      border-top: 1px solid rgba(255, 110, 32, 0.38);
+      border-bottom: 1px solid rgba(255, 110, 32, 0.18);
+    }
+
+    .focus-card h3 {
+      margin-top: 6px;
+      margin-bottom: 8px;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: #fff3e7;
+    }
+
+    .focus-card .subtle {
+      max-width: 70ch;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .card h2,
+    .card h3,
+    .card h4 {
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+      font-weight: 700;
+    }
+
+    .subtle {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .day-banner {
+      display: grid;
+      gap: 14px;
+    }
+
+    .day-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255, 106, 0, 0.12);
+      color: #ffd0ad;
+      border: 1px solid rgba(255, 126, 32, 0.20);
+    }
+
+    .slot-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .group-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .exercise-group {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid rgba(255, 126, 32, 0.16);
+      border-radius: 22px;
+      background: rgba(14, 14, 14, 0.78);
+    }
+
+    .group-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .group-heading h4 {
+      margin: 0;
+      font-size: 1.08rem;
+    }
+
+    .group-slots {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .slot-card {
+      background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(18, 18, 18, 0.98));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .slot-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.38);
+      border-color: rgba(255, 126, 32, 0.32);
+    }
+
+    .slot-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .slot-kicker {
+      margin: 0 0 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #d1c3b6;
+    }
+
+    .slot-title {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.25;
+    }
+
+    .slot-chip {
+      flex-shrink: 0;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(255, 106, 0, 0.12);
+      border: 1px solid var(--line);
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #ffb47b;
+    }
+
+    .exercise-name {
+      margin: 3px 0 0;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nudge-line {
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 106, 0, 0.10);
+      color: #ffd0ad;
+      font-size: 0.92rem;
+    }
+
+    .slot-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .set-tracker {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .set-stepper {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .stepper-button {
+      min-width: 52px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 14px;
+      font-weight: 800;
+    }
+
+    .input-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .input-label {
+      font-size: 0.9rem;
+      color: #d1c3b6;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      padding: 14px 15px;
+      font-size: 1rem;
+      color: var(--text);
+      background: #111111;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    input[type="text"]:focus {
+      border-color: rgba(255, 126, 32, 0.58);
+      box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12);
+    }
+
+    .nudge-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nudge-button,
+    .primary-button,
+    .secondary-button,
+    .ghost-button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .nudge-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #242424;
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 1.2rem;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+    }
+
+    .nudge-button.active-up {
+      background: rgba(63, 143, 101, 0.14);
+      border-color: rgba(63, 143, 101, 0.35);
+      color: var(--success);
+    }
+
+    .nudge-button.active-down {
+      background: rgba(184, 92, 92, 0.14);
+      border-color: rgba(184, 92, 92, 0.32);
+      color: var(--danger);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .primary-button,
+    .secondary-button,
+    .ghost-button {
+      min-height: 52px;
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .primary-button:disabled,
+    .secondary-button:disabled,
+    .ghost-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.52;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, #ff8b26, var(--primary-strong));
+      color: #160b04;
+      box-shadow: 0 16px 24px rgba(255, 90, 0, 0.20);
+    }
+
+    .secondary-button {
+      background: #282828;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .ghost-button {
+      background: rgba(173, 90, 90, 0.10);
+      color: var(--danger);
+      border: 1px solid rgba(173, 90, 90, 0.16);
+    }
+
+    .today-empty {
+      text-align: center;
+      padding: 28px 20px;
+    }
+
+    .action-card {
+      display: grid;
+      gap: 16px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top center, rgba(255, 94, 0, 0.14), transparent 28%),
+        linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(10, 10, 10, 0.98));
+      border-color: rgba(255, 126, 32, 0.18);
+    }
+
+    .action-card::before {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: 14px;
+      height: 8px;
+      border-top: 1px solid rgba(255, 126, 32, 0.38);
+      border-bottom: 1px solid rgba(255, 126, 32, 0.16);
+      pointer-events: none;
+    }
+
+    .action-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .action-kicker {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #ffb47b;
+    }
+
+    .action-card .card-header {
+      margin-top: 10px;
+    }
+
+    .action-card h3 {
+      color: #fff3e7;
+      font-size: 1.45rem;
+      text-shadow: 0 0 18px rgba(255, 96, 0, 0.12);
+    }
+
+    .action-card .subtle {
+      color: #d6c7b8;
+    }
+
+    .action-value {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.04;
+      color: #fff0e3;
+    }
+
+    .action-support {
+      margin: -2px 0 0;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    .session-overview {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .overview-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(30, 30, 30, 0.94), rgba(18, 18, 18, 0.94));
+      border: 1px solid rgba(255, 126, 32, 0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .overview-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.77rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 800;
+      color: #c6b8aa;
+    }
+
+    .overview-value {
+      display: block;
+      font-size: 1rem;
+      line-height: 1.35;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .stats-grid,
+    .history-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    .library-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .stat-card,
+    .mini-card {
+      padding: 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(31,31,31,0.98), rgba(18,18,18,0.96));
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+    }
+
+    .stat-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+    }
+
+    .stat-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .mini-card h4 {
+      margin-bottom: 8px;
+      font-size: 1.02rem;
+    }
+
+    .recovery-slider-card {
+      gap: 12px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 94, 0, 0.10), transparent 34%),
+        linear-gradient(180deg, rgba(35, 35, 35, 0.98), rgba(16, 16, 16, 0.96));
+    }
+
+    .recovery-slider-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .recovery-slider-head strong {
+      font-size: 1rem;
+      color: #fff1e6;
+      letter-spacing: 0.01em;
+    }
+
+    .recovery-slider-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary-strong);
+      letter-spacing: -0.03em;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary-strong);
+    }
+
+    .score-panel {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .score-panel .overview-value {
+      font-size: 1.2rem;
+    }
+
+    .finished-card {
+      text-align: center;
+      justify-items: center;
+      padding-top: 30px;
+      padding-bottom: 28px;
+    }
+
+    .finished-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      color: #160b04;
+      background: linear-gradient(135deg, #ff8b26, var(--primary-strong));
+      box-shadow: 0 16px 30px rgba(255, 90, 0, 0.22);
+    }
+
+    .finished-card .action-value,
+    .finished-card .action-support,
+    .finished-card .subtle {
+      text-align: center;
+      max-width: 50ch;
+    }
+
+    .inline-list,
+    .detail-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .inline-list li,
+    .detail-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+    }
+
+    .inline-list li:last-child,
+    .detail-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .detail-list strong {
+      color: var(--text);
+    }
+
+    .history-item {
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(31,31,31,0.98), rgba(17,17,17,0.96));
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+    }
+
+    .history-item h4 {
+      margin-bottom: 10px;
+    }
+
+    .history-meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .history-summary {
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .history-item .day-badges {
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+
+    .history-item .badge {
+      padding: 7px 10px;
+      font-size: 0.82rem;
+    }
+
+    .muted-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .accordion {
+      overflow: hidden;
+    }
+
+    .accordion summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .accordion summary::after {
+      content: "+";
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(255, 106, 0, 0.12);
+      color: #ffb47b;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      transition: transform var(--transition), background var(--transition);
+    }
+
+    .accordion[open] summary::after {
+      transform: rotate(45deg);
+      background: rgba(255, 106, 0, 0.20);
+    }
+
+    .accordion-body {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .timer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .timer-row.centered {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .timer-row.centered .button-row,
+    .timer-row.centered .timer-options {
+      justify-content: center;
+    }
+
+    .timer-display {
+      font-size: clamp(2rem, 7vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .timer-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .hiit-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hiit-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(120px, 160px) auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .set-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #202020;
+      font-weight: 800;
+      color: #ffb47b;
+    }
+
+    .confetti-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -12vh;
+      width: 12px;
+      height: 18px;
+      border-radius: 4px;
+      opacity: 0.96;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin));
+        opacity: 0.9;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app-shell {
+        width: min(calc(100% - 12px), var(--max-width));
+        margin: 10px auto 28px;
+      }
+
+      .hero,
+      .card {
+        border-radius: 20px;
+        padding: 14px;
+      }
+
+      .hero {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+      }
+
+      .tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 12px;
+        padding: 5px;
+        border-radius: 18px;
+      }
+
+      .tab-button {
+        min-height: 42px;
+        padding: 10px 8px;
+        border-radius: 12px;
+        font-size: 0.83rem;
+      }
+
+      .slot-controls {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .set-tracker {
+        grid-template-columns: 1fr;
+      }
+
+      .set-stepper {
+        justify-content: stretch;
+      }
+
+      .stack {
+        gap: 12px;
+      }
+
+      .view {
+        margin-top: 12px;
+      }
+
+      .hero-meta {
+        gap: 6px;
+      }
+
+      .pill {
+        padding: 7px 10px;
+        font-size: 0.8rem;
+      }
+
+      .card-header {
+        margin-bottom: 12px;
+      }
+
+      .subtle {
+        line-height: 1.45;
+      }
+
+      .slot-grid {
+        gap: 10px;
+      }
+
+      .group-slots,
+      .hiit-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .slot-card {
+        border-radius: 18px;
+        padding: 14px;
+      }
+
+      .slot-top {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .slot-kicker {
+        margin-bottom: 4px;
+        font-size: 0.72rem;
+      }
+
+      .slot-title {
+        font-size: 1rem;
+      }
+
+      .exercise-name {
+        font-size: 0.96rem;
+      }
+
+      .slot-chip {
+        padding: 6px 9px;
+        border-radius: 11px;
+        font-size: 0.8rem;
+      }
+
+      .nudge-line {
+        margin-top: 8px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+      }
+
+      .input-wrap {
+        gap: 6px;
+      }
+
+      .input-label {
+        font-size: 0.82rem;
+      }
+
+      input[type="text"] {
+        border-radius: 12px;
+        padding: 12px 13px;
+        font-size: 0.96rem;
+      }
+
+      .nudge-controls {
+        justify-content: flex-end;
+        gap: 6px;
+      }
+
+      .card-header,
+      .slot-top {
+        flex-direction: column;
+      }
+
+      .slot-chip {
+        align-self: flex-start;
+      }
+
+      .button-row {
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .primary-button,
+      .secondary-button,
+      .ghost-button {
+        min-height: 46px;
+        width: 100%;
+        justify-content: center;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 0.94rem;
+      }
+
+      .nudge-button {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+      }
+
+      .stepper-button {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .app-shell {
+        width: min(calc(100% - 10px), var(--max-width));
+      }
+
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-button {
+        font-size: 0.88rem;
+      }
+
+      .pill {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Polished Iron Frame identity */
+    :root {
+      --font-body: "Bahnschrift", "DIN Alternate", "Segoe UI", sans-serif;
+      --max-width: 1040px;
+    }
+
+    .app-shell {
+      margin-top: max(18px, env(safe-area-inset-top));
+      margin-bottom: max(42px, env(safe-area-inset-bottom));
+    }
+
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 4px 14px;
+    }
+
+    .brand-mark {
+      width: 62px;
+      height: 62px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid rgba(255, 126, 32, 0.32);
+      border-radius: 16px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38), 0 0 24px rgba(255, 90, 0, 0.08);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-name {
+      margin: 0;
+      color: #f1ece4;
+      font-family: var(--font-display);
+      font-size: 1.28rem;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-tagline {
+      margin: 6px 0 0;
+      color: #d87534;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 30px;
+      background:
+        linear-gradient(90deg, rgba(5, 5, 5, 0.97) 0%, rgba(5, 5, 5, 0.78) 45%, rgba(5, 5, 5, 0.12) 100%),
+        linear-gradient(0deg, #080808 0%, transparent 58%),
+        url("./iron-frame-hero.webp") center / cover no-repeat;
+      isolation: isolate;
+    }
+
+    .hero::after {
+      left: 22px;
+      right: 22px;
+    }
+
+    .hero-content {
+      max-width: 610px;
+    }
+
+    .hero h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(2.7rem, 8vw, 5.8rem);
+      line-height: 0.9;
+      letter-spacing: -0.045em;
+      text-transform: uppercase;
+      text-shadow: 0 4px 24px #000;
+    }
+
+    .hero p {
+      color: #ddd1c5;
+      line-height: 1.55;
+    }
+
+    .hero-meta {
+      margin-top: 24px;
+    }
+
+    .tabs {
+      position: sticky;
+      top: max(0px, env(safe-area-inset-top));
+      z-index: 20;
+    }
+
+    .install-panel {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 126, 32, 0.22);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(37, 22, 13, 0.98), rgba(18, 18, 18, 0.98));
+      box-shadow: var(--shadow-soft);
+      color: #eadfd4;
+    }
+
+    .install-panel.visible {
+      display: flex;
+    }
+
+    .install-panel strong,
+    .install-panel span {
+      display: block;
+    }
+
+    .install-panel span {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .install-panel .primary-button {
+      min-height: 42px;
+      flex-shrink: 0;
+      padding: 9px 14px;
+    }
+
+    .pwa-status {
+      margin-left: auto;
+      color: #9c8f82;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 720px) {
+      .brand-bar {
+        padding: 6px 2px 10px;
+      }
+
+      .brand-mark {
+        width: 50px;
+        height: 50px;
+        border-radius: 13px;
+      }
+
+      .brand-name {
+        font-size: 1.05rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.6rem;
+      }
+
+      .pwa-status {
+        display: none;
+      }
+
+      .hero {
+        min-height: 410px;
+        padding: 20px;
+        background:
+          linear-gradient(0deg, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.66) 58%, rgba(5, 5, 5, 0.08) 100%),
+          url("./iron-frame-hero.webp") 58% center / cover no-repeat;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 17vw, 4.5rem);
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .install-panel {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+
+    @media (display-mode: standalone) {
+      .install-panel {
+        display: none !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <header class="brand-bar">
+      <img class="brand-mark" src="./iron-frame-logo.webp" alt="Iron Frame logo" width="62" height="62">
+      <div class="brand-copy">
+        <p class="brand-name">Iron Frame</p>
+        <p class="brand-tagline">Athletic Kettlebell Hypertrophy</p>
+      </div>
+      <span class="pwa-status" id="pwaStatus">Ready offline</span>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">Build muscle through movement</div>
+        <h1>Iron<br>Frame</h1>
+        <p>Pattern-based hypertrophy, loaded mobility and hard, clean kettlebell work.</p>
+      </div>
+      <div class="hero-meta">
+        <div class="pill" id="heroDayPill">Day 1</div>
+        <div class="pill" id="heroModePill">Fixed program</div>
+        <div class="pill" id="heroProgressPill">0 sessions completed</div>
+      </div>
+    </section>
+
+    <aside class="install-panel" id="installPanel" aria-live="polite">
+      <div>
+        <strong>Installeer Iron Frame</strong>
+        <span>Gebruik de app fullscreen en ook zonder verbinding.</span>
+      </div>
+      <button class="primary-button" type="button" id="installButton">Installeren</button>
+    </aside>
+
+    <nav class="tabs" aria-label="Navigation">
+      <button class="tab-button active" data-tab="today" type="button">Today</button>
+      <button class="tab-button" data-tab="options" type="button">Options</button>
+    </nav>
+
+    <section class="view active" id="todayView"></section>
+    <section class="view" id="optionsView"></section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "iron-frame-v1";
+    const LS_FOCUS_BAG_KEY = "session_iron_frame_focus_bag_v1";
+    const LS_FOCUS_DAY_KEY = "session_iron_frame_focus_day_v1";
+    const LS_FOCUS_TODAY_KEY = "session_iron_frame_focus_today_v1";
+    const APP_VERSION = 7;
+    const TABS = { TODAY: "today", OPTIONS: "options" };
+    const RECOVERY_FIELDS = [
+      { key: "energy", label: "Energy" },
+      { key: "body", label: "Body / recovery" },
+      { key: "mind", label: "Mind / stress" }
+    ];
+    const RECOVERY_BANDS = {
+      override: { key: "override", label: "Recovery override", min: 3, max: 7 },
+      low: { key: "low", label: "Low", min: 8, max: 10 },
+      medium: { key: "medium", label: "Medium", min: 11, max: 13 },
+      high: { key: "high", label: "High", min: 14, max: 15 }
+    };
+    const SESSION_LABELS = {
+      strength: "Iron Frame",
+      zone2: "Zone 2",
+      hiit: "HIIT",
+      recovery: "Recovery day",
+      breatheRest: "Breathe & Rest"
+    };
+    const PERIODIZATION_PHASES = [
+      {
+        key: "hypertrophy",
+        label: "Hypertrophy Frame",
+        sessionCount: 16,
+        summary: "Build volume, muscle and repeatable technique.",
+        guidance: "A1: start with 3 sets and add clean sets up to 6. Main lift 1-2 RIR; compounds 1-3 RIR; specialized and tertiary work 0-2 RIR."
+      },
+      {
+        key: "deload-hypertrophy",
+        type: "deload",
+        label: "Deload",
+        sessionCount: 4,
+        summary: "Halve the work, keep 3-5 RIR and arrive fresh.",
+        guidance: "No grinding and no extra sets. Conditioning stays calm; mobility may get more room."
+      },
+      {
+        key: "strength",
+        label: "Strength Frame",
+        sessionCount: 16,
+        summary: "Push heavier main lifts while the rest stays hypertrophic.",
+        guidance: "A1 carries the strength emphasis at 3-5 sets of 4-6. Keep the rest controlled and stop at technical failure."
+      },
+      {
+        key: "deload-strength",
+        type: "deload",
+        label: "Deload",
+        sessionCount: 4,
+        summary: "Reduce fatigue before restarting Hypertrophy Frame.",
+        guidance: "No grinding and no extra sets. Conditioning stays calm; mobility may get more room."
+      }
+    ];
+    const PERIODIZATION_CYCLE_LENGTH = PERIODIZATION_PHASES.reduce((sum, phase) => sum + phase.sessionCount, 0);
+
+    const IRON_FRAME_DAYS = [
+      {
+        key: "squat",
+        title: "Dag 1 - Squat Focus",
+        focus: "Zware squat + extra unilateral squat.",
+        tertiary: "Biceps/pull-accessoire in loaded squatpositie.",
+        slots: [
+          { block: "Primer", exercise: "Get-up", prescription: "1-2x1 per kant" },
+          { block: "A1", exercise: "Double front squat", prescription: "3-6x6-12", role: "Focus main lift" },
+          { block: "A2", exercise: "Chin-up", prescription: "2-3x6-12", role: "Wederpatroon" },
+          { block: "B1", exercise: "Double RDL", prescription: "2x8-12" },
+          { block: "B2", exercise: "Half-kneeling press", prescription: "2x8-12 per kant" },
+          { block: "C1", exercise: "Bulgarian split squat", prescription: "2-3x8-12 per been", role: "Specialized squat" },
+          { block: "C2", exercise: "Bottom goblet squat curl", prescription: "2x10-15", role: "Tertiair pull" }
+        ]
+      },
+      {
+        key: "push",
+        title: "Dag 2 - Push Focus",
+        focus: "Verticale push + horizontale push.",
+        tertiary: "C2 is tertiaire hinge / ballistic skill. Niet conditioneel maken.",
+        slots: [
+          { block: "Primer", exercise: "Two-hands anyhow", prescription: "1-3 singles per kant" },
+          { block: "A1", exercise: "Military press", prescription: "3-6x6-12", role: "Focus main lift" },
+          { block: "A2", exercise: "Single-leg deadlift", prescription: "2-3x8-12 per kant", role: "Main lift van hinge" },
+          { block: "B1", exercise: "Gorilla row", prescription: "2x8-12" },
+          { block: "B2", exercise: "Goblet squat", prescription: "2x8-12" },
+          { block: "C1", exercise: "Bridge floor press", prescription: "2-3x8-12", role: "Specialized push" },
+          { block: "C2", exercise: "Double clean", prescription: "2x5-8", role: "Ballistic skill" }
+        ]
+      },
+      {
+        key: "pull",
+        title: "Dag 3 - Pull Focus",
+        focus: "Verticale pull + extra horizontale pull.",
+        tertiary: "Double front squat komt terug met minder volume dan dag 1. C2 is laterale loaded mobility.",
+        slots: [
+          { block: "Primer", exercise: "Windmill", prescription: "1-2x2-3 per kant" },
+          { block: "A1", exercise: "Chin-up", prescription: "3-6x6-12", role: "Focus main lift" },
+          { block: "A2", exercise: "Double front squat", prescription: "2-3x8-12", role: "Main lift van squat" },
+          { block: "B1", exercise: "Double floor press", prescription: "2x8-12" },
+          { block: "B2", exercise: "Kickstand RDL", prescription: "2x8-12 per kant" },
+          { block: "C1", exercise: "Staggered row", prescription: "2-3x8-12 per kant", role: "Specialized pull" },
+          { block: "C2", exercise: "Cossack squat / side lunge", prescription: "2x6-12 per kant", role: "Tertiaire squat" }
+        ]
+      },
+      {
+        key: "hinge",
+        title: "Dag 4 - Hinge Focus",
+        focus: "Hinge + extra glutevolume.",
+        tertiary: "A2 is main lift van push. C2 is tertiaire push.",
+        slots: [
+          { block: "Primer", exercise: "Bent press", prescription: "1-2x1-3 per kant" },
+          { block: "A1", exercise: "Single-leg deadlift", prescription: "3-6x6-12 per kant", role: "Focus main lift" },
+          { block: "A2", exercise: "Military press", prescription: "2-3x8-12", role: "Main lift van push" },
+          { block: "B1", exercise: "Step-up", prescription: "2x8-12 per been" },
+          { block: "B2", exercise: "Single-arm row", prescription: "2x8-12 per kant" },
+          { block: "C1", exercise: "Hip thrust", prescription: "2-3x8-15", role: "Specialized hinge" },
+          { block: "C2", exercise: "Overhead triceps extension", prescription: "2x10-15", role: "Tertiaire push" }
+        ]
+      }
+    ];
+
+    const GROUP_REST_OPTIONS = [60, 75, 90];
+    const IRON_FRAME_FOCUS_LESSONS = [
+      {
+        title: "Build muscle through movement.",
+        text: "The goal is not random fatigue. The goal is useful hypertrophy built through patterns, intent and control."
+      },
+      {
+        title: "Kettlebell-first, not kettlebell-only.",
+        text: "The bell leads the program, but every tool still answers to the same standards: movement quality and progression."
+      },
+      {
+        title: "Technical failure is failure.",
+        text: "If shape breaks down, the set is done. The program rewards clean work, not ugly survival."
+      },
+      {
+        title: "Max Effort earns its place.",
+        text: "Only the focus lift gets extra volume. Everything else supports the result without stealing recovery."
+      },
+      {
+        title: "Recovery protects the frame.",
+        text: "The rotation stays intact, but a very low recovery score replaces hard work with breathing, walking and recovery."
+      },
+      {
+        title: "Loaded mobility is training too.",
+        text: "Mobility here is not fluff. It is how you recover, hold position and keep the whole frame useful."
+      },
+      {
+        title: "Pattern before preference.",
+        text: "Squat, push, pull and hinge all stay in the week. The priority changes, but the frame stays complete."
+      },
+      {
+        title: "Progress is specific.",
+        text: "Better means more reps, better positions, cleaner sets or a harder bell. Keep the signal honest."
+      },
+      {
+        title: "Do not bury the next session.",
+        text: "A great workout that ruins tomorrow is not a win. Iron Frame grows by staying repeatable."
+      }
+    ];
+
+    const CONDITIONING_CYCLES = [
+      {
+        zone2: {
+          name: "Carry Zone 2",
+          duration: { low: 20, medium: 20, high: 20 },
+          format: ["Rustige loaded carry-walk", "Wissel handen waar nodig", "Suitcase, farmer en rack mogen afwisselen", "Stop ruim voor gripfalen"],
+          goal: "Rustige aerobe prikkel + romp, grip en houding."
+        },
+        hiit: {
+          name: "Snatch HIIT",
+          rounds: { low: 5, medium: 6, high: 7 },
+          restSec: 120,
+          format: ["5 snatches links", "5 snatches rechts", "90-120 sec rust"],
+          goal: "Ballistic pull/overhead power."
+        }
+      },
+      {
+        zone2: {
+          name: "Swing Zone 2",
+          duration: { low: 30, medium: 35, high: 40 },
+          format: ["Elke minuut: 5 two-hand swings", "Rest van de minuut: rust en neusademhaling"],
+          goal: "A+A-achtige aerobe hinge-practice."
+        },
+        hiit: {
+          name: "Clean & Jerk HIIT",
+          rounds: { low: 5, medium: 6, high: 7 },
+          restSec: 120,
+          format: ["3 clean & jerks links", "3 clean & jerks rechts", "90-120 sec rust"],
+          goal: "Ballistic push/fullbody power."
+        }
+      },
+      {
+        zone2: {
+          name: "Snatch Walk Zone 2",
+          duration: { low: 15, medium: 20, high: 25 },
+          format: ["1 snatch", "Zakken naar rack", "1 stap naar voren", "Herhalen en elke 5 reps van arm wisselen"],
+          goal: "Snatch-skill + rustige aerobe flow."
+        },
+        hiit: {
+          name: "Carry HIIT",
+          rounds: { low: 6, medium: 7, high: 8 },
+          timedWork: true,
+          workSec: 25,
+          restSec: 90,
+          format: ["20-30 sec zware carry", "60-90 sec rust"],
+          goal: "Zware romp, grip en houding + hartslagpiek."
+        }
+      },
+      {
+        zone2: {
+          name: "Clean & Jerk Zone 2",
+          duration: { low: 15, medium: 20, high: 25 },
+          format: ["Elke 30 seconden: 1 clean & jerk", "Links en rechts afwisselen"],
+          goal: "Rustige ballistic push/fullbody skill."
+        },
+        hiit: {
+          name: "Swing HIIT",
+          rounds: { low: 6, medium: 7, high: 8 },
+          restSec: 90,
+          format: ["10 krachtige two-hand swings", "75-90 sec rust"],
+          goal: "Ballistic hinge-power."
+        }
+      }
+    ];
+
+    const WARMUP_CONTENT = [
+      "Three way neck",
+      "Fingers & Wrist",
+      "Elbow Circles",
+      "Halo",
+      "Egyptian",
+      "Hip Circels",
+      "Toes, Feet, Ankle",
+      "Prying Cobra",
+      "Frog",
+      "Tug Of War Squat"
+    ];
+
+    const COOLDOWN_CONTENT = [
+      "Walk and breathe until heart rate settles",
+      "Pick 2-3 loaded mobility pieces that open what the session taxed",
+      "Leave the session feeling more restored, not more cooked"
+    ];
+
+    const RECOVERY_CONTENT = {
+      4: {
+        title: "General Mobility",
+        sections: [
+          {
+            heading: "Hips",
+            items: [
+              "Figure 4 position, figure 4 lunge, half heel sit",
+              "Z position switches and Z position side roll",
+              "Hip Openers - Prone to TGU to Bridge"
+            ]
+          },
+          {
+            heading: "Shoulders",
+            items: [
+              "The Egyptian - Seated, Pike, Prone",
+              "S movement - Seated, Pike, Prone",
+              "Figure 8 in Crawl - 6 point & 4 point",
+              "Crawl to crab",
+              "Pike to tabletop"
+            ]
+          },
+          {
+            heading: "Ankles",
+            items: [
+              "Ankle series - Up & down, in & out, Rotations",
+              "Figure 8's toes and ankle",
+              "Snail",
+              "Crawl-frog-crab transitions"
+            ]
+          },
+          {
+            heading: "Spine & Neck",
+            items: [
+              "Supine neck rolls - Left to right",
+              "Hand on knee rolling",
+              "Segmental rolling - Neck, arms & legs",
+              "Forwards and backwards rolling"
+            ]
+          },
+          {
+            heading: "Wrists",
+            items: [
+              "Finger waves",
+              "Hand circles",
+              "Tea pot"
+            ]
+          }
+        ]
+      },
+      7: {
+        title: "Loaded Kettlebell Mobility",
+        sections: [
+          {
+            heading: "Loaded Kettlebell Mobility",
+            items: [
+              "30s Arm Bar",
+              "2/3 Bent Arm Bar",
+              "3/5 Rib Pull",
+              "3/5 Bretzel",
+              "3/5 Windmill",
+              "3/3 Bent Press",
+              "5/10 Pump Stretch",
+              "5/10 Tactical Frog",
+              "10 Overhead Hip Flexor Stretch",
+              "5 Prying Goblet Squat",
+              "3/5 Cossack Squat",
+              "5/10 Goodmorning Hamstring Stretch",
+              "5/10 Kettlebell Pull over",
+              "3/5 Get Up High Bridge",
+              "5 Tall kneeling Halo",
+              "3 Tall Kneeling Rotations"
+            ]
+          }
+        ]
+      }
+    };
+
+    function createDefaultState() {
+      return {
+        appVersion: APP_VERSION,
+        trainingSessionsCompleted: 0,
+        periodization: {
+          mode: "auto",
+          autoCompletedStrengthSessions: 0
+        },
+        recoveryCheckins: {},
+        rotations: {
+          mainOrderIndex: 0,
+          subcategories: {
+            conditioningCycle: 0,
+            conditioningZone2Done: false,
+            conditioningHiitDone: false
+          }
+        },
+        records: {
+          exercises: {}
+        },
+        timers: {
+          groupA: {
+            endTime: null,
+            running: false,
+            lastDurationSec: 75,
+            beeped: false
+          },
+          groupB: {
+            endTime: null,
+            running: false,
+            lastDurationSec: 75,
+            beeped: false
+          },
+          groupC: {
+            endTime: null,
+            running: false,
+            lastDurationSec: 75,
+            beeped: false
+          }
+        },
+        hiit: {
+          activeOptionIndex: null,
+          activePlanName: null,
+          activeMode: "full",
+          setsDone: 0,
+          weights: {},
+          timer: {
+            endTime: null,
+            running: false,
+            phase: "idle",
+            beeped: false
+          },
+          restDurations: {}
+        },
+        history: [],
+        currentWorkout: null
+      };
+    }
+
+    let state = loadState();
+    let activeTab = TABS.TODAY;
+    let timerIntervalId = null;
+    let wakeLock = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          return createDefaultState();
+        }
+        const parsed = JSON.parse(raw);
+        const merged = mergeWithDefaults(parsed);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        return merged;
+      } catch (error) {
+        console.warn("Kon state niet laden, defaults worden gebruikt.", error);
+        return createDefaultState();
+      }
+    }
+
+    function mergeWithDefaults(saved) {
+      const base = createDefaultState();
+      const savedStrengthSessions = Number(saved.trainingSessionsCompleted) || 0;
+      const savedPeriodizationMode = saved.periodization && ["auto", "hypertrophy", "strength"].includes(saved.periodization.mode)
+        ? saved.periodization.mode
+        : "auto";
+      const merged = {
+        ...base,
+        appVersion: Number(saved.appVersion) || base.appVersion,
+        trainingSessionsCompleted: savedStrengthSessions,
+        periodization: {
+          mode: savedPeriodizationMode,
+          autoCompletedStrengthSessions: saved.periodization && Number.isFinite(Number(saved.periodization.autoCompletedStrengthSessions))
+            ? Math.max(0, Number(saved.periodization.autoCompletedStrengthSessions))
+            : savedStrengthSessions
+        },
+        recoveryCheckins: {
+          ...base.recoveryCheckins,
+          ...(saved.recoveryCheckins || {})
+        },
+        rotations: {
+          mainOrderIndex: Number(saved.rotations && saved.rotations.mainOrderIndex) || 0,
+          subcategories: {
+            conditioningCycle: Number(saved.rotations && saved.rotations.subcategories && saved.rotations.subcategories.conditioningCycle) || 0,
+            conditioningZone2Done: !!(saved.rotations && saved.rotations.subcategories && saved.rotations.subcategories.conditioningZone2Done),
+            conditioningHiitDone: !!(saved.rotations && saved.rotations.subcategories && saved.rotations.subcategories.conditioningHiitDone)
+          }
+        },
+        records: {
+          ...base.records,
+          ...(saved.records || {}),
+          exercises: {
+            ...base.records.exercises,
+            ...((saved.records && saved.records.exercises) || {})
+          }
+        },
+        timers: {
+          ...base.timers,
+          groupA: {
+            ...base.timers.groupA,
+            ...((saved.timers && saved.timers.groupA) || {})
+          },
+          groupB: {
+            ...base.timers.groupB,
+            ...((saved.timers && saved.timers.groupB) || {})
+          },
+          groupC: {
+            ...base.timers.groupC,
+            ...((saved.timers && saved.timers.groupC) || {})
+          }
+        },
+        hiit: {
+          ...base.hiit,
+          ...(saved.hiit || {}),
+          weights: {
+            ...base.hiit.weights,
+            ...((saved.hiit && saved.hiit.weights) || {})
+          },
+          restDurations: {
+            ...base.hiit.restDurations,
+            ...((saved.hiit && saved.hiit.restDurations) || {})
+          },
+          timer: {
+            ...base.hiit.timer,
+            ...((saved.hiit && saved.hiit.timer) || {})
+          }
+        },
+        history: Array.isArray(saved.history) ? saved.history : [],
+        currentWorkout: saved.currentWorkout || null
+      };
+      if (saved.appVersion !== APP_VERSION) {
+        if (merged.currentWorkout && merged.currentWorkout.rotationSnapshot) {
+          merged.rotations = cloneRotations(merged.currentWorkout.rotationSnapshot);
+        }
+        merged.currentWorkout = null;
+        merged.appVersion = APP_VERSION;
+      }
+      return merged;
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function cloneRotations(rotations) {
+      return JSON.parse(JSON.stringify(rotations || createDefaultState().rotations));
+    }
+
+    function shuffle(array) {
+      const copy = Array.isArray(array) ? array.slice() : [];
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+      }
+      return copy;
+    }
+
+    function getTodayKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function isValidFocusLesson(value) {
+      return !!value
+        && typeof value.title === "string"
+        && value.title.trim()
+        && typeof value.text === "string"
+        && value.text.trim();
+    }
+
+    function loadFocusBag() {
+      try {
+        const raw = localStorage.getItem(LS_FOCUS_BAG_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            const validLessons = parsed.filter(isValidFocusLesson);
+            if (validLessons.length) {
+              return validLessons;
+            }
+          }
+        }
+      } catch (error) {
+        console.warn("Kon focus-bag niet laden, nieuwe bag wordt gemaakt.", error);
+      }
+
+      const freshBag = shuffle(IRON_FRAME_FOCUS_LESSONS);
+      localStorage.setItem(LS_FOCUS_BAG_KEY, JSON.stringify(freshBag));
+      return freshBag;
+    }
+
+    function drawFocus() {
+      let bag = loadFocusBag();
+      let previousFocus = null;
+
+      try {
+        const raw = localStorage.getItem(LS_FOCUS_TODAY_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (isValidFocusLesson(parsed)) {
+            previousFocus = parsed;
+          }
+        }
+      } catch (error) {
+        console.warn("Kon vorige focus niet lezen.", error);
+      }
+
+      if (!bag.length) {
+        bag = shuffle(IRON_FRAME_FOCUS_LESSONS);
+      }
+
+      if (
+        previousFocus
+        && bag.length > 1
+        && bag[0]
+        && bag[0].title === previousFocus.title
+        && bag[0].text === previousFocus.text
+      ) {
+        const swapIndex = bag.findIndex((lesson) => lesson.title !== previousFocus.title || lesson.text !== previousFocus.text);
+        if (swapIndex > 0) {
+          [bag[0], bag[swapIndex]] = [bag[swapIndex], bag[0]];
+        }
+      }
+
+      const focus = bag.shift() || IRON_FRAME_FOCUS_LESSONS[0];
+
+      if (!bag.length) {
+        bag = shuffle(IRON_FRAME_FOCUS_LESSONS);
+        if (
+          bag.length > 1
+          && bag[0]
+          && bag[0].title === focus.title
+          && bag[0].text === focus.text
+        ) {
+          const swapIndex = bag.findIndex((lesson) => lesson.title !== focus.title || lesson.text !== focus.text);
+          if (swapIndex > 0) {
+            [bag[0], bag[swapIndex]] = [bag[swapIndex], bag[0]];
+          }
+        }
+      }
+
+      localStorage.setItem(LS_FOCUS_BAG_KEY, JSON.stringify(bag));
+      return focus;
+    }
+
+    function getTodayFocus() {
+      const today = getTodayKey();
+      const cachedDay = localStorage.getItem(LS_FOCUS_DAY_KEY);
+
+      if (cachedDay === today) {
+        try {
+          const raw = localStorage.getItem(LS_FOCUS_TODAY_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (isValidFocusLesson(parsed)) {
+              return parsed;
+            }
+          }
+        } catch (error) {
+          console.warn("Kon focus van vandaag niet laden.", error);
+        }
+      }
+
+      const focus = drawFocus();
+      localStorage.setItem(LS_FOCUS_DAY_KEY, today);
+      localStorage.setItem(LS_FOCUS_TODAY_KEY, JSON.stringify(focus));
+      return focus;
+    }
+
+    function getSlotPrescription(slot) {
+      return slot.prescription || "";
+    }
+
+    function getPeriodizationPhase() {
+      const mode = state.periodization && state.periodization.mode ? state.periodization.mode : "auto";
+      if (mode === "hypertrophy" || mode === "strength") {
+        const phase = PERIODIZATION_PHASES.find((item) => item.key === mode);
+        const heldSessions = Math.max(0, Number(state.trainingSessionsCompleted) || 0);
+        const phaseSessionIndex = heldSessions % phase.sessionCount;
+        return {
+          ...phase,
+          locked: true,
+          cycleIndex: phaseSessionIndex,
+          phaseSessionIndex,
+          phaseSessionNumber: phaseSessionIndex + 1,
+          cycleNumber: Math.floor(heldSessions / phase.sessionCount) + 1
+        };
+      }
+
+      const completedStrengthSessions = state.periodization
+        ? state.periodization.autoCompletedStrengthSessions
+        : state.trainingSessionsCompleted;
+      const cycleIndex = Math.max(0, Number(completedStrengthSessions) || 0) % PERIODIZATION_CYCLE_LENGTH;
+      let cursor = 0;
+
+      for (const phase of PERIODIZATION_PHASES) {
+        const phaseEnd = cursor + phase.sessionCount;
+        if (cycleIndex < phaseEnd) {
+          return {
+            ...phase,
+            cycleIndex,
+            phaseSessionIndex: cycleIndex - cursor,
+            phaseSessionNumber: cycleIndex - cursor + 1,
+            cycleNumber: Math.floor(Math.max(0, Number(completedStrengthSessions) || 0) / PERIODIZATION_CYCLE_LENGTH) + 1
+          };
+        }
+        cursor = phaseEnd;
+      }
+
+      return { ...PERIODIZATION_PHASES[0], cycleIndex: 0, phaseSessionIndex: 0, phaseSessionNumber: 1, cycleNumber: 1 };
+    }
+
+    function getSideSuffix(prescription) {
+      const match = String(prescription || "").match(/\s+(per\s+(?:kant|been))$/i);
+      return match ? " " + match[1] : "";
+    }
+
+    function reduceToDeloadSets(prescription) {
+      const value = String(prescription || "");
+      return value.includes("x") ? value.replace(/^[^x]+x/, "1-2x") : value;
+    }
+
+    function getPeriodizedPrescription(template, phase) {
+      const original = template.prescription || "";
+      const phaseType = phase.type || phase.key;
+      const sideSuffix = getSideSuffix(original);
+
+      if (phaseType === "hypertrophy") {
+        return original;
+      }
+
+      if (phaseType === "deload") {
+        if (template.block === "Primer") {
+          return "1 lichte ronde - " + original;
+        }
+        if (template.block === "A1") {
+          return "2-3x6-8" + sideSuffix;
+        }
+        return reduceToDeloadSets(original);
+      }
+
+      if (template.block === "Primer") {
+        return original;
+      }
+      if (template.block === "A1") {
+        return "3-5x4-6" + sideSuffix;
+      }
+      if (template.block === "A2") {
+        return "2-3x6-10" + sideSuffix;
+      }
+      if (template.block === "B1" || template.block === "B2") {
+        return "2x8-10" + sideSuffix;
+      }
+      if (template.block === "C1") {
+        return "2x8-12" + sideSuffix;
+      }
+      if (template.exercise === "Double clean" || template.exercise === "Cossack squat / side lunge") {
+        return original;
+      }
+      return "2x10-15" + sideSuffix;
+    }
+
+    function createDefaultRecoveryCheckin() {
+      return {
+        energy: 3,
+        body: 3,
+        mind: 3,
+        submittedAt: null
+      };
+    }
+
+    function getTodayRecoveryCheckin() {
+      return state.recoveryCheckins[getTodayKey()] || null;
+    }
+
+    function getRecoveryTotal(checkin) {
+      return RECOVERY_FIELDS.reduce((sum, field) => sum + Number(checkin[field.key] || 0), 0);
+    }
+
+    function getRecoveryBand(total) {
+      if (total <= RECOVERY_BANDS.override.max) {
+        return RECOVERY_BANDS.override;
+      }
+      if (total <= RECOVERY_BANDS.low.max) {
+        return RECOVERY_BANDS.low;
+      }
+      if (total <= RECOVERY_BANDS.medium.max) {
+        return RECOVERY_BANDS.medium;
+      }
+      return RECOVERY_BANDS.high;
+    }
+
+    function getLocalDayStart(value) {
+      const date = new Date(value);
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function getDaysSinceDate(value) {
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const today = getLocalDayStart(new Date());
+      const then = getLocalDayStart(value);
+      return Math.floor((today - then) / msPerDay);
+    }
+
+    function getLastCompletedSessionByType(sessionType) {
+      return state.history.find((item) => item.type !== "skip" && item.sessionType === sessionType) || null;
+    }
+
+    function isTrainingSessionType(sessionType) {
+      return sessionType === "strength" || sessionType === "zone2" || sessionType === "hiit";
+    }
+
+    function isRecoverySessionType(sessionType) {
+      return sessionType === "recovery" || sessionType === "breatheRest";
+    }
+
+    function hasTrainingOnDaysAgo(daysAgo) {
+      return state.history.some((item) => item.type !== "skip" && isTrainingSessionType(item.sessionType) && getDaysSinceDate(item.completedAt) === daysAgo);
+    }
+
+    function getSessionLoggedDaysAgo(daysAgo) {
+      return state.history.find((item) => item.type !== "skip" && getDaysSinceDate(item.completedAt) === daysAgo) || null;
+    }
+
+    function countTrainingDaysInLastDays(dayCount) {
+      let count = 0;
+      for (let daysAgo = 1; daysAgo <= dayCount; daysAgo += 1) {
+        if (hasTrainingOnDaysAgo(daysAgo)) {
+          count += 1;
+        }
+      }
+      return count;
+    }
+
+    function getConsecutiveTrainingDaysEndingDaysAgo(endDaysAgo) {
+      let count = 0;
+      let cursor = endDaysAgo;
+
+      while (hasTrainingOnDaysAgo(cursor)) {
+        count += 1;
+        cursor += 1;
+      }
+
+      return count;
+    }
+
+    function getCurrentTrainingBlockTarget() {
+      const currentStreakLength = getConsecutiveTrainingDaysEndingDaysAgo(1);
+      if (!currentStreakLength) {
+        return 3;
+      }
+
+      const boundaryDaysAgo = currentStreakLength + 1;
+      const boundarySession = getSessionLoggedDaysAgo(boundaryDaysAgo);
+
+      if (!boundarySession || !isRecoverySessionType(boundarySession.sessionType)) {
+        return 3;
+      }
+
+      const previousBlockLength = getConsecutiveTrainingDaysEndingDaysAgo(boundaryDaysAgo + 1);
+      return previousBlockLength >= 3 ? 2 : 3;
+    }
+
+    function getBaseSessionTypeFromHistory() {
+      const yesterdaySession = getSessionLoggedDaysAgo(1);
+      const trainedYesterday = !!(yesterdaySession && isTrainingSessionType(yesterdaySession.sessionType));
+
+      if (countTrainingDaysInLastDays(7) >= 5) {
+        return "recovery";
+      }
+
+      if (!trainedYesterday) {
+        return "strength";
+      }
+
+      const streakLength = getConsecutiveTrainingDaysEndingDaysAgo(1);
+      const streakTarget = getCurrentTrainingBlockTarget();
+      if (streakLength >= streakTarget) {
+        return "recovery";
+      }
+
+      if (yesterdaySession.sessionType !== "strength") {
+        return "strength";
+      }
+
+      const lastZone2 = getLastCompletedSessionByType("zone2");
+      if (!lastZone2 || getDaysSinceDate(lastZone2.completedAt) > 7) {
+        return "zone2";
+      }
+
+      const lastHiit = getLastCompletedSessionByType("hiit");
+      if (!lastHiit || getDaysSinceDate(lastHiit.completedAt) > 7) {
+        return "hiit";
+      }
+
+      return "recovery";
+    }
+
+    function getRecoveryDayDose(bandKey) {
+      if (bandKey === "low") {
+        return {
+          title: "Breathe and Walk",
+          summary: "Lowest recovery day.",
+          guidance: [
+            "Choose breathing, walking, or very light movement.",
+            "You should finish more recovered than when you started."
+          ]
+        };
+      }
+      if (bandKey === "medium") {
+        return {
+          title: "General Mobility",
+          summary: "Normal recovery day.",
+          guidance: [
+            "Use GFM or general mobility to restore motion and control.",
+            "Stay calm, smooth and recovery-focused."
+          ]
+        };
+      }
+      return {
+        title: "Loaded Kettlebell Mobility",
+        summary: "High-recovery day.",
+        guidance: [
+          "Use the fixed 15-20 minute kettlebell mobility flow.",
+          "Control under light load. Do not turn it into a workout."
+        ]
+      };
+    }
+
+    function getCurrentConditioningCycleIndex() {
+      return Number(state.rotations.subcategories.conditioningCycle) || 0;
+    }
+
+    function getCurrentConditioningCycle() {
+      const index = getCurrentConditioningCycleIndex();
+      return CONDITIONING_CYCLES[index % CONDITIONING_CYCLES.length];
+    }
+
+    function getCurrentZone2Plan(bandKey) {
+      const index = getCurrentConditioningCycleIndex();
+      const plan = getCurrentConditioningCycle().zone2;
+      return {
+        ...plan,
+        cycleIndex: index % CONDITIONING_CYCLES.length,
+        minutes: plan.duration[bandKey] || plan.duration.medium
+      };
+    }
+
+    function getConditioningRoundTarget(rounds, bandKey) {
+      return rounds[bandKey] || rounds.medium;
+    }
+
+    function completeConditioningType(type) {
+      const subcategories = state.rotations.subcategories;
+      if (type === "zone2") {
+        subcategories.conditioningZone2Done = true;
+      }
+      if (type === "hiit") {
+        subcategories.conditioningHiitDone = true;
+      }
+      if (subcategories.conditioningZone2Done && subcategories.conditioningHiitDone) {
+        subcategories.conditioningCycle = getCurrentConditioningCycleIndex() + 1;
+        subcategories.conditioningZone2Done = false;
+        subcategories.conditioningHiitDone = false;
+      }
+    }
+
+    function getTodayPlan() {
+      const dateKey = getTodayKey();
+      const checkin = getTodayRecoveryCheckin();
+      const baseSessionType = getBaseSessionTypeFromHistory();
+      if (!checkin || !checkin.submittedAt) {
+        return {
+          dateKey,
+          pendingCheckin: true,
+          baseSessionType
+        };
+      }
+
+      const total = getRecoveryTotal(checkin);
+      const band = getRecoveryBand(total);
+      if (band.key === "override") {
+        return {
+          dateKey,
+          checkin,
+          total,
+          band,
+          baseSessionType,
+          effectiveSessionType: "breatheRest",
+          title: "Breathe & Rest",
+          subtitle: "Below 8, recovery always wins.",
+          summary: "Today, recovery is the training."
+        };
+      }
+
+      if (baseSessionType === "strength") {
+        return {
+          dateKey,
+          checkin,
+          total,
+          band,
+          baseSessionType,
+          effectiveSessionType: "strength",
+          title: "Iron Frame",
+          subtitle: "Fixed strength session.",
+          summary: "Continue with the next strength day in the program."
+        };
+      }
+
+      if (baseSessionType === "zone2") {
+        const conditioningPlan = getCurrentZone2Plan(band.key);
+        return {
+          dateKey,
+          checkin,
+          total,
+          band,
+          baseSessionType,
+          effectiveSessionType: "zone2",
+          title: conditioningPlan.name,
+          subtitle: conditioningPlan.minutes + " minuten",
+          summary: conditioningPlan.goal,
+          zone2Minutes: conditioningPlan.minutes,
+          conditioningPlan
+        };
+      }
+
+      if (baseSessionType === "hiit") {
+        const conditioningPlan = getCurrentConditioningCycle().hiit;
+        const hiitSets = getConditioningRoundTarget(conditioningPlan.rounds, band.key);
+        return {
+          dateKey,
+          checkin,
+          total,
+          band,
+          baseSessionType,
+          effectiveSessionType: "hiit",
+          title: conditioningPlan.name,
+          subtitle: hiitSets + " rondes",
+          summary: conditioningPlan.goal,
+          hiitSets,
+          conditioningPlan
+        };
+      }
+
+      const recoveryDose = getRecoveryDayDose(band.key);
+      return {
+        dateKey,
+        checkin,
+        total,
+        band,
+        baseSessionType,
+        effectiveSessionType: "recovery",
+        title: recoveryDose.title,
+        subtitle: recoveryDose.summary,
+        summary: "Recovery day comes from your logbook; the score chooses the format.",
+        recoveryDose
+      };
+    }
+
+    function getExerciseRecord(exercise) {
+      if (!state.records.exercises[exercise]) {
+        state.records.exercises[exercise] = {
+          lastValue: "",
+          pendingNudge: null
+        };
+      }
+      return state.records.exercises[exercise];
+    }
+
+    function buildPreviousText(lastValue, pendingNudge) {
+      if (!lastValue) {
+        return "";
+      }
+      if (pendingNudge === "up") {
+        return "Last time: " + lastValue + " -- probeer iets zwaarder";
+      }
+      if (pendingNudge === "down") {
+        return "Last time: " + lastValue + " -- probeer iets lichter";
+      }
+      return "Last time: " + lastValue;
+    }
+
+    function rotateIronFrameDay() {
+      const day = IRON_FRAME_DAYS[state.rotations.mainOrderIndex % IRON_FRAME_DAYS.length];
+      state.rotations.mainOrderIndex += 1;
+      return day;
+    }
+
+    function createIronFrameSlot(template, index, phase) {
+      const record = getExerciseRecord(template.exercise);
+      const slot = {
+        id: "iron-frame-" + index,
+        slotType: template.block === "Primer" ? "primer" : "main",
+        patternKey: template.block,
+        label: template.block,
+        subcategory: template.role || template.block,
+        exercise: template.exercise,
+        prescription: getPeriodizedPrescription(template, phase),
+        basePrescription: template.prescription,
+        previousText: buildPreviousText(record.lastValue, record.pendingNudge),
+        inputValue: record.lastValue || "",
+        nudgeChoice: null,
+        setsDone: 0
+      };
+      record.pendingNudge = null;
+      return slot;
+    }
+
+    function ensureCurrentWorkout(plan) {
+      if (!plan || plan.effectiveSessionType !== "strength") {
+        return;
+      }
+
+      if (state.currentWorkout) {
+        return;
+      }
+
+      const rotationSnapshot = cloneRotations(state.rotations);
+      const programDay = rotateIronFrameDay();
+      const periodization = getPeriodizationPhase();
+      const slots = programDay.slots.map((slot, index) => createIronFrameSlot(slot, index, periodization));
+
+      state.currentWorkout = {
+        id: "workout-" + Date.now(),
+        planDate: plan.dateKey,
+        generatedAt: new Date().toISOString(),
+        rotationSnapshot,
+        programDayKey: programDay.key,
+        programDayTitle: programDay.title,
+        focusNote: programDay.focus,
+        tertiaryNote: programDay.tertiary,
+        periodization,
+        order: programDay.slots.map((slot) => slot.block),
+        slots
+      };
+      saveState();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderFocusOfTheDay() {
+      const focus = getTodayFocus();
+      return `
+        <article class="card soft focus-card">
+          <p class="slot-kicker">Focus of the Day</p>
+          <h3>${escapeHtml(focus.title)}</h3>
+          <p class="subtle">${escapeHtml(focus.text)}</p>
+        </article>
+      `;
+    }
+
+    function formatDateTime(value) {
+      try {
+        return new Date(value).toLocaleString("nl-NL", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+      } catch (error) {
+        return value;
+      }
+    }
+
+    function getDateKeyFromValue(value) {
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function getLastLoggedItem() {
+      return state.history[0] || null;
+    }
+
+    function isTodayClosed() {
+      const lastItem = getLastLoggedItem();
+      return !!(lastItem && getDateKeyFromValue(lastItem.completedAt) === getTodayKey());
+    }
+
+    function getCurrentHiitOption() {
+      return formatHiitPlan(getCurrentHiitPlan());
+    }
+
+    function getCurrentHiitPlan() {
+      const currentIndex = getCurrentConditioningCycleIndex();
+      const plan = getCurrentConditioningCycle().hiit;
+      const todayPlan = getTodayPlan();
+      const targetSets = todayPlan.hiitSets || getConditioningRoundTarget(plan.rounds, "medium");
+      return {
+        ...plan,
+        optionIndex: currentIndex % CONDITIONING_CYCLES.length,
+        mode: "full",
+        targetSets
+      };
+    }
+
+    function formatHiitPlan(plan) {
+      return plan.name + ": " + plan.targetSets + " rondes - " + plan.format.join(" - ") + ".";
+    }
+
+    function getHiitRestSeconds(plan) {
+      const savedRest = Number(state.hiit.restDurations[getHiitSessionKey(plan)]);
+      return savedRest > 0 ? savedRest : plan.restSec;
+    }
+
+    function advanceHiitRotation() {
+      completeConditioningType("hiit");
+    }
+
+    function advanceZone2Rotation() {
+      completeConditioningType("zone2");
+    }
+
+    function formatSeconds(totalSeconds) {
+      const safeSeconds = Math.max(0, totalSeconds);
+      const minutes = Math.floor(safeSeconds / 60);
+      const seconds = safeSeconds % 60;
+      return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    }
+
+    function getRestTimerKeys() {
+      return Object.keys(state.timers || {});
+    }
+
+    function getTimerState(timerKey) {
+      return state.timers[timerKey];
+    }
+
+    function getRemainingSeconds(timerKey) {
+      const timer = getTimerState(timerKey);
+      if (!timer.running || !timer.endTime) {
+        return timer.lastDurationSec || 75;
+      }
+      const diffMs = timer.endTime - Date.now();
+      return Math.max(0, Math.ceil(diffMs / 1000));
+    }
+
+    function syncTimerState() {
+      getRestTimerKeys().forEach((timerKey) => {
+        const timer = getTimerState(timerKey);
+        if (!timer.running || !timer.endTime) {
+          return;
+        }
+        if (Date.now() >= timer.endTime && !timer.beeped) {
+          timer.beeped = true;
+          timer.running = false;
+          saveState();
+          playBeep(1046);
+        }
+      });
+      syncHiitTimerState();
+      updateWakeLock();
+    }
+
+    function startRestTimer(timerKey, durationSec) {
+      const timer = getTimerState(timerKey);
+      timer.lastDurationSec = durationSec;
+      timer.endTime = Date.now() + (durationSec * 1000);
+      timer.running = true;
+      timer.beeped = false;
+      saveState();
+      startTimerLoop();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function stopRestTimer(timerKey) {
+      const timer = getTimerState(timerKey);
+      timer.running = false;
+      timer.endTime = null;
+      timer.beeped = false;
+      saveState();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function startTimerLoop() {
+      if (timerIntervalId) {
+        return;
+      }
+      timerIntervalId = window.setInterval(() => {
+        syncTimerState();
+        updateTimerDisplay();
+      }, 250);
+    }
+
+    function updateTimerDisplay() {
+      getRestTimerKeys().forEach((timerKey) => {
+        const display = document.getElementById("timerDisplay-" + timerKey);
+        if (display) {
+          display.textContent = formatSeconds(getRemainingSeconds(timerKey));
+        }
+      });
+      const hiitDisplay = document.getElementById("hiitTimerDisplay");
+      if (hiitDisplay) {
+        hiitDisplay.textContent = formatSeconds(getHiitRemainingSeconds());
+      }
+      const anyRunning = getRestTimerKeys().some((timerKey) => getTimerState(timerKey).running) || state.hiit.timer.running;
+      if (!anyRunning && timerIntervalId) {
+        window.clearInterval(timerIntervalId);
+        timerIntervalId = null;
+      }
+      updateWakeLock();
+    }
+
+    function playBeep(frequency) {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          return;
+        }
+        const context = new AudioContextClass();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency || 880;
+        gain.gain.setValueAtTime(0.001, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.18, context.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.55);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.55);
+      } catch (error) {
+        console.warn("Beep kon niet worden afgespeeld.", error);
+      }
+    }
+
+    function getHiitSessionKey(plan) {
+      return plan.name;
+    }
+
+    function prepareHiitSession(plan) {
+      const changedPlan = state.hiit.activeOptionIndex !== plan.optionIndex
+        || state.hiit.activeMode !== plan.mode
+        || state.hiit.activePlanName !== plan.name;
+      if (changedPlan) {
+        state.hiit.activeOptionIndex = plan.optionIndex;
+        state.hiit.activePlanName = plan.name;
+        state.hiit.activeMode = plan.mode;
+        state.hiit.setsDone = 0;
+        state.hiit.timer.running = false;
+        state.hiit.timer.endTime = null;
+        state.hiit.timer.phase = "idle";
+        state.hiit.timer.beeped = false;
+        saveState();
+      }
+    }
+
+    function getHiitRemainingSeconds() {
+      const timer = state.hiit.timer;
+      if (!timer.running || !timer.endTime) {
+        const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
+        return timer.phase === "rest"
+          ? getHiitRestSeconds(plan)
+          : plan.timedWork
+            ? plan.workSec
+            : 0;
+      }
+      return Math.max(0, Math.ceil((timer.endTime - Date.now()) / 1000));
+    }
+
+    function syncHiitTimerState() {
+      const timer = state.hiit.timer;
+      if (!timer.running || !timer.endTime || Date.now() < timer.endTime || timer.beeped) {
+        return;
+      }
+
+      const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
+      timer.beeped = true;
+      playBeep(timer.phase === "work" ? 1175 : 880);
+
+      if (timer.phase === "work") {
+        state.hiit.setsDone = Math.min(plan.targetSets, (state.hiit.setsDone || 0) + 1);
+        timer.phase = state.hiit.setsDone >= plan.targetSets ? "done" : "rest";
+        timer.running = false;
+        timer.endTime = null;
+      } else {
+        timer.phase = "idle";
+        timer.running = false;
+        timer.endTime = null;
+      }
+      saveState();
+      renderApp();
+    }
+
+    function startHiitPhase(phase) {
+      const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
+      if (phase === "work" && !plan.timedWork) {
+        return;
+      }
+      if (state.hiit.setsDone >= plan.targetSets && phase === "work") {
+        state.hiit.setsDone = 0;
+      }
+      state.hiit.timer.phase = phase;
+      state.hiit.timer.endTime = Date.now() + ((phase === "rest" ? getHiitRestSeconds(plan) : plan.workSec) * 1000);
+      state.hiit.timer.running = true;
+      state.hiit.timer.beeped = false;
+      saveState();
+      startTimerLoop();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function completeHiitRound() {
+      const plan = getCurrentHiitPlan();
+      if (state.hiit.timer.running || state.hiit.setsDone >= plan.targetSets) {
+        return;
+      }
+      state.hiit.setsDone += 1;
+      state.hiit.timer.beeped = false;
+      if (state.hiit.setsDone >= plan.targetSets) {
+        state.hiit.timer.phase = "done";
+        state.hiit.timer.endTime = null;
+        state.hiit.timer.running = false;
+      } else {
+        state.hiit.timer.phase = "rest";
+        state.hiit.timer.endTime = Date.now() + (getHiitRestSeconds(plan) * 1000);
+        state.hiit.timer.running = true;
+        startTimerLoop();
+      }
+      saveState();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function stopHiitTimer() {
+      state.hiit.timer.running = false;
+      state.hiit.timer.endTime = null;
+      state.hiit.timer.beeped = false;
+      saveState();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function resetHiitSets() {
+      state.hiit.setsDone = 0;
+      state.hiit.timer.running = false;
+      state.hiit.timer.endTime = null;
+      state.hiit.timer.phase = "idle";
+      state.hiit.timer.beeped = false;
+      saveState();
+      updateWakeLock();
+      renderApp();
+    }
+
+    function updateHiitWeight(value) {
+      const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
+      state.hiit.weights[getHiitSessionKey(plan)] = value;
+      saveState();
+    }
+
+    function updateHiitRestDuration(value) {
+      const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
+      const restSeconds = Math.max(15, Math.min(240, Number(value) || plan.restSec));
+      state.hiit.restDurations[getHiitSessionKey(plan)] = restSeconds;
+      if (!state.hiit.timer.running && state.hiit.timer.phase === "rest") {
+        state.hiit.timer.endTime = null;
+      }
+      saveState();
+      renderApp();
+    }
+
+    function anyTimerRunning() {
+      return getRestTimerKeys().some((timerKey) => getTimerState(timerKey).running) || state.hiit.timer.running;
+    }
+
+    async function requestWakeLock() {
+      if (wakeLock || !("wakeLock" in navigator) || document.visibilityState !== "visible") {
+        return;
+      }
+      try {
+        wakeLock = await navigator.wakeLock.request("screen");
+        wakeLock.addEventListener("release", () => {
+          wakeLock = null;
+        });
+      } catch (error) {
+        wakeLock = null;
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (!wakeLock) {
+        return;
+      }
+      try {
+        await wakeLock.release();
+      } catch (error) {
+        wakeLock = null;
+      }
+    }
+
+    function updateWakeLock() {
+      if (anyTimerRunning()) {
+        requestWakeLock();
+      } else {
+        releaseWakeLock();
+      }
+    }
+
+    function renderRecoveryGate(plan) {
+      const draft = getTodayRecoveryCheckin() || createDefaultRecoveryCheckin();
+      const draftTotal = getRecoveryTotal(draft);
+      const draftBand = getRecoveryBand(draftTotal);
+      const sliderRows = RECOVERY_FIELDS.map((field) => `
+        <label class="mini-card recovery-slider-card" style="display:grid;">
+          <div class="recovery-slider-head">
+            <strong>${escapeHtml(field.label)}</strong>
+            <span class="recovery-slider-value" id="recoveryValue-${escapeHtml(field.key)}">${escapeHtml(draft[field.key] || 3)}</span>
+          </div>
+          <input
+            type="range"
+            min="1"
+            max="5"
+            step="1"
+            value="${escapeHtml(draft[field.key] || 3)}"
+            data-action="recovery-slider"
+            data-key="${escapeHtml(field.key)}"
+          >
+        </label>
+      `).join("");
+
+      return `
+        <article class="card action-card">
+          <div class="card-header">
+            <div>
+              <p class="action-kicker">Start here</p>
+              <h3>Recovery screen</h3>
+              <p class="subtle">Score recovery first, then Iron Frame shows your session.</p>
+            </div>
+            <div class="slot-chip">Score 1-5</div>
+          </div>
+          <div class="stats-grid">
+            ${sliderRows}
+          </div>
+          <div class="score-panel">
+            <div class="overview-card">
+              <span class="overview-label">Recovery total</span>
+              <span class="overview-value" id="recoveryTotalValue">${escapeHtml(draftTotal)}/15</span>
+            </div>
+            <div class="overview-card">
+              <span class="overview-label">Band</span>
+              <span class="overview-value" id="recoveryBandValue">${escapeHtml(draftBand.label)}</span>
+            </div>
+          </div>
+          <div class="button-row" style="margin-top:16px;">
+            <button class="primary-button" type="button" id="startSessionButton">Show today's session</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderRecoverySnapshot(plan) {
+      return `
+        <article class="card soft">
+          <div class="card-header">
+            <div>
+              <h3>Recovery score</h3>
+              <p class="subtle">${escapeHtml(plan.band.label)} - ${plan.total}/15</p>
+            </div>
+            <button class="ghost-button" type="button" id="editRecoveryButton">Edit score</button>
+          </div>
+          <div class="day-badges">
+            ${RECOVERY_FIELDS.map((field) => `<div class="badge">${escapeHtml(field.label)}: ${escapeHtml(plan.checkin[field.key])}</div>`).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderFinishedState() {
+      const lastItem = getLastLoggedItem();
+      const summary = lastItem
+        ? (lastItem.type === "skip"
+          ? "Today's session has been skipped."
+          : "Today's session has been logged.")
+        : "Today's work is done.";
+
+      return `
+        <article class="card action-card finished-card">
+          <div class="finished-mark">OK</div>
+          <div class="card-header">
+            <div>
+              <p class="action-kicker">Closed for today</p>
+              <h3>Finished for today</h3>
+              <p class="subtle">Iron Frame unlocks the next session when it is a new day.</p>
+            </div>
+            <div class="slot-chip">Closed</div>
+          </div>
+          <div class="action-value">Today's work is done.</div>
+          <p class="action-support">${escapeHtml(summary)}</p>
+          ${lastItem ? `<p class="subtle">Last log: ${escapeHtml(lastItem.title)} - ${escapeHtml(formatDateTime(lastItem.completedAt))}</p>` : ""}
+        </article>
+      `;
+    }
+
+    function renderToday() {
+      const view = document.getElementById("todayView");
+      if (isTodayClosed()) {
+        view.innerHTML = `
+          <div class="stack">
+            ${renderFocusOfTheDay()}
+            ${renderFinishedState()}
+          </div>
+        `;
+        return;
+      }
+
+      const plan = getTodayPlan();
+      ensureCurrentWorkout(plan);
+
+      if (plan.pendingCheckin) {
+        view.innerHTML = `
+          <div class="stack">
+            ${renderFocusOfTheDay()}
+            ${renderRecoveryGate(plan)}
+          </div>
+        `;
+        bindRecoveryGateControls();
+        return;
+      }
+
+      if (plan.effectiveSessionType !== "strength") {
+        const actionValue = plan.effectiveSessionType === "zone2"
+          ? plan.zone2Minutes + " minutes"
+          : plan.effectiveSessionType === "hiit"
+            ? getCurrentHiitOption()
+            : plan.title;
+        const conditioningHtml = plan.effectiveSessionType === "hiit"
+          ? renderHiitCard()
+          : plan.effectiveSessionType === "zone2"
+            ? renderZone2Card(plan.conditioningPlan)
+            : "";
+
+        view.innerHTML = `
+          <div class="stack">
+            ${renderFocusOfTheDay()}
+            ${renderRecoverySnapshot(plan)}
+            <article class="card action-card">
+              <div class="card-header">
+                <div>
+                  <p class="action-kicker">Today's session</p>
+                  <h3>${escapeHtml(plan.title)}</h3>
+                  <p class="subtle">${escapeHtml(plan.subtitle)}</p>
+                </div>
+                <div class="slot-chip">${escapeHtml(SESSION_LABELS[plan.effectiveSessionType])}</div>
+              </div>
+              <div class="action-value">${escapeHtml(actionValue)}</div>
+              ${conditioningHtml}
+              ${renderRecoveryGuidance(plan)}
+              <div class="button-row">
+                <button class="primary-button" type="button" id="finishRecoveryButton">Complete session</button>
+                <button class="secondary-button" type="button" id="skipDayButton">Skip</button>
+              </div>
+            </article>
+          </div>
+        `;
+        bindWorkoutControls();
+        document.getElementById("finishRecoveryButton").addEventListener("click", handleFinishRecoveryDay);
+        document.getElementById("skipDayButton").addEventListener("click", handleSkipDay);
+        const editButton = document.getElementById("editRecoveryButton");
+        if (editButton) {
+          editButton.addEventListener("click", handleEditRecoveryCheckin);
+        }
+        return;
+      }
+
+      const workout = state.currentWorkout;
+      const periodization = workout.periodization || getPeriodizationPhase();
+      const groupsHtml = renderTrainingGroups(workout, plan);
+      const warmupHtml = renderWarmupAccordion();
+      const cooldownHtml = renderCooldownAccordion();
+      const carryOverNote = workout.planDate && workout.planDate !== getTodayKey()
+        ? `<p class="muted-note">You are continuing an open strength session from ${escapeHtml(workout.planDate)}. The exercise order stays the same until you complete or skip it.</p>`
+        : "";
+      const modeNote = "";
+
+      view.innerHTML = `
+        <div class="stack">
+          ${renderFocusOfTheDay()}
+          ${renderRecoverySnapshot(plan)}
+          ${warmupHtml}
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <p class="action-kicker">Today's session</p>
+                <h3>${escapeHtml(workout.programDayTitle || "Iron Frame")}</h3>
+                <p class="subtle">${escapeHtml(workout.focusNote || "Fixed strength session.")}</p>
+              </div>
+              <div class="slot-chip">${escapeHtml(periodization.label)} ${periodization.phaseSessionNumber}/${periodization.sessionCount}</div>
+            </div>
+            ${groupsHtml}
+            ${carryOverNote}
+            ${modeNote}
+            ${cooldownHtml}
+            <div class="button-row">
+              <button class="primary-button" type="button" id="finishWorkoutButton">Complete session</button>
+              <button class="secondary-button" type="button" id="skipDayButton">Skip</button>
+            </div>
+          </article>
+        </div>
+      `;
+
+      bindWorkoutControls();
+      document.getElementById("skipDayButton").addEventListener("click", handleSkipDay);
+      document.getElementById("editRecoveryButton").addEventListener("click", handleEditRecoveryCheckin);
+    }
+
+    function renderTrainingGroups(workout, plan) {
+      const periodization = workout.periodization || getPeriodizationPhase();
+      const primerSlots = workout.slots.filter((slot) => slot.label === "Primer");
+      const slotByBlock = (block) => workout.slots.filter((slot) => slot.label === block);
+      const groups = [
+        { id: "primer", title: "Primer", subtitle: "Loaded mobility / core / skill", slots: primerSlots, timer: false },
+        { id: "groupA", title: "A Block", subtitle: "Focus main lift + wederpatroon", slots: [...slotByBlock("A1"), ...slotByBlock("A2")], timer: true },
+        { id: "groupB", title: "B Block", subtitle: "Ontbrekende twee patronen", slots: [...slotByBlock("B1"), ...slotByBlock("B2")], timer: true },
+        { id: "groupC", title: "C Block", subtitle: "Specialized variety + tertiaire oefening", slots: [...slotByBlock("C1"), ...slotByBlock("C2")], timer: true }
+      ];
+
+      return `
+        <div class="group-grid">
+          <article class="card soft focus-card">
+            <p class="slot-kicker">${escapeHtml(periodization.label)} - ronde ${Math.floor(periodization.phaseSessionIndex / IRON_FRAME_DAYS.length) + 1} van 4</p>
+            <h3>${escapeHtml(workout.programDayTitle || "Iron Frame Focus")}</h3>
+            <p class="subtle">${escapeHtml(workout.focusNote || "")}</p>
+            <p class="subtle">${escapeHtml(workout.tertiaryNote || "")}</p>
+            <p class="muted-note">${escapeHtml(periodization.summary)} Sessie ${periodization.phaseSessionNumber} van ${periodization.sessionCount} in deze fase.</p>
+            <p class="muted-note">${escapeHtml(periodization.guidance || "")}</p>
+          </article>
+          ${groups.filter((group) => group.slots.length).map((group) => renderExerciseGroup(group)).join("")}
+        </div>
+      `;
+    }
+
+    function renderExerciseGroup(group) {
+      return `
+        <section class="exercise-group">
+          <div class="group-heading">
+            <div>
+              <h4>${escapeHtml(group.title)}</h4>
+              <p class="subtle">${escapeHtml(group.subtitle)}</p>
+            </div>
+            <div class="slot-chip">${group.slots.length} exercises</div>
+          </div>
+          <div class="group-slots">
+            ${group.slots.map((slot) => renderSlot(slot)).join("")}
+          </div>
+          ${group.timer === false ? "" : renderGroupTimer(group.id)}
+        </section>
+      `;
+    }
+
+    function renderGroupTimer(timerKey) {
+      const timer = getTimerState(timerKey);
+      return `
+        <div class="mini-card">
+          <div class="timer-row centered">
+            <div>
+              <div class="slot-kicker">Rest between these exercises</div>
+              <div class="timer-display" id="timerDisplay-${escapeHtml(timerKey)}">${formatSeconds(getRemainingSeconds(timerKey))}</div>
+            </div>
+          </div>
+          <div class="timer-options">
+            ${GROUP_REST_OPTIONS.map((seconds) => `
+              <button class="primary-button" type="button" data-action="group-timer-start" data-timer-key="${escapeHtml(timerKey)}" data-duration="${seconds}">
+                ${timer.running && timer.lastDurationSec === seconds ? "Restart" : "Start"} ${formatSeconds(seconds)}
+              </button>
+            `).join("")}
+            <button class="secondary-button" type="button" data-action="group-timer-stop" data-timer-key="${escapeHtml(timerKey)}">Stop</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSlot(slot) {
+      const nudgeMarkup = slot.previousText
+        ? `<div class="nudge-line">${escapeHtml(slot.previousText)}</div>`
+        : "";
+      const prescription = getSlotPrescription(slot);
+      const exerciseMarkup = `<p class="exercise-name">${escapeHtml(slot.subcategory)}</p>`;
+      const prescriptionMarkup = prescription
+        ? `<div class="nudge-line">${escapeHtml(prescription)}</div>`
+        : "";
+      const setCount = Number(slot.setsDone) || 0;
+      const controlsMarkup = `
+          <div class="slot-controls">
+            <label class="input-wrap">
+              <span class="input-label">Load / note</span>
+              <input
+                type="text"
+                value="${escapeHtml(slot.inputValue || "")}"
+                placeholder="E.g. 24 kg or 2x8"
+                data-action="slot-input"
+                data-slot-id="${escapeHtml(slot.id)}"
+              >
+            </label>
+            <div class="nudge-controls">
+              <button class="nudge-button ${slot.nudgeChoice === "down" ? "active-down" : ""}" type="button" data-action="nudge" data-slot-id="${escapeHtml(slot.id)}" data-direction="down" aria-label="A little lighter next time">-</button>
+              <button class="nudge-button ${slot.nudgeChoice === "up" ? "active-up" : ""}" type="button" data-action="nudge" data-slot-id="${escapeHtml(slot.id)}" data-direction="up" aria-label="A little heavier next time">+</button>
+            </div>
+          </div>
+        `;
+      const setTrackerMarkup = `
+        <div class="set-tracker">
+          <div class="set-counter">Sets ${setCount}</div>
+          <div class="set-stepper">
+            <button class="secondary-button stepper-button" type="button" data-action="set-adjust" data-slot-id="${escapeHtml(slot.id)}" data-delta="-1" ${setCount <= 0 ? "disabled" : ""}>-1</button>
+            <button class="primary-button stepper-button" type="button" data-action="set-adjust" data-slot-id="${escapeHtml(slot.id)}" data-delta="1">+ Set</button>
+          </div>
+        </div>
+      `;
+
+      return `
+        <article class="slot-card">
+          <div class="slot-top">
+            <div>
+              <p class="slot-kicker">${escapeHtml(slot.label)}</p>
+              <h4 class="slot-title">${escapeHtml(slot.exercise || slot.subcategory)}</h4>
+              ${exerciseMarkup}
+              ${prescriptionMarkup}
+            </div>
+            <div class="slot-chip">${escapeHtml(slot.label)}</div>
+          </div>
+          ${nudgeMarkup}
+          ${setTrackerMarkup}
+          ${controlsMarkup}
+        </article>
+      `;
+    }
+
+    function renderWarmupAccordion() {
+      return `
+        <article class="card soft">
+          <details class="accordion">
+            <summary>Warm-up</summary>
+            <div class="accordion-body">
+              <ul class="detail-list">
+                ${WARMUP_CONTENT.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+              </ul>
+            </div>
+          </details>
+        </article>
+      `;
+    }
+
+    function renderCooldownAccordion() {
+      return `
+        <details class="accordion" style="margin-top: 18px;">
+          <summary>Cooling down</summary>
+          <div class="accordion-body">
+            <ul class="detail-list">
+              ${COOLDOWN_CONTENT.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </div>
+        </details>
+      `;
+    }
+
+    function renderZone2Card(plan) {
+      return `
+        <article class="slot-card hiit-panel">
+          <div class="slot-top">
+            <div>
+              <p class="slot-kicker">Zone 2</p>
+              <h4 class="slot-title">${escapeHtml(plan.name)}</h4>
+              <p class="exercise-name">${escapeHtml(plan.minutes)} minuten</p>
+            </div>
+            <div class="slot-chip">Rustig</div>
+          </div>
+          <div class="mini-card">
+            <ul class="detail-list">
+              ${plan.format.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </div>
+          <div class="nudge-line">${escapeHtml(plan.goal)}</div>
+        </article>
+      `;
+    }
+
+    function renderHiitCard() {
+      const plan = getCurrentHiitPlan();
+      prepareHiitSession(plan);
+      const timer = state.hiit.timer;
+      const weightValue = state.hiit.weights[getHiitSessionKey(plan)] || "";
+      const restSeconds = getHiitRestSeconds(plan);
+      const phaseLabel = timer.phase === "work"
+        ? "Werk"
+        : timer.phase === "rest"
+          ? "Rest"
+          : timer.phase === "done"
+            ? "Done"
+            : "Ready for set";
+      const startLabel = timer.running
+        ? "Timer loopt"
+        : timer.phase === "rest"
+          ? "Start rust"
+          : state.hiit.setsDone >= plan.targetSets
+            ? "Reset and start"
+            : "Start carry";
+      const roundButton = plan.timedWork
+        ? `<button class="primary-button" type="button" data-action="hiit-start" ${timer.running ? "disabled" : ""}>${escapeHtml(startLabel)}</button>`
+        : `<button class="primary-button" type="button" data-action="hiit-complete" ${timer.running || state.hiit.setsDone >= plan.targetSets ? "disabled" : ""}>Ronde klaar + start rust</button>`;
+
+      return `
+        <article class="slot-card hiit-panel">
+          <div class="slot-top">
+            <div>
+              <p class="slot-kicker">HIIT</p>
+              <h4 class="slot-title">${escapeHtml(plan.name)}</h4>
+              <p class="exercise-name">${escapeHtml(formatHiitPlan(plan))}</p>
+            </div>
+            <div class="slot-chip">${escapeHtml(phaseLabel)}</div>
+          </div>
+          <div class="hiit-controls">
+            <label class="input-wrap">
+              <span class="input-label">Load / note</span>
+              <input
+                type="text"
+                value="${escapeHtml(weightValue)}"
+                placeholder="E.g. 24 kg, sled +40 kg"
+                data-action="hiit-weight"
+              >
+            </label>
+            <label class="input-wrap">
+              <span class="input-label">Rest (sec)</span>
+              <input
+                type="text"
+                inputmode="numeric"
+                value="${escapeHtml(restSeconds)}"
+                placeholder="E.g. 75"
+                data-action="hiit-rest-duration"
+              >
+            </label>
+            <div class="set-counter">Sets ${state.hiit.setsDone || 0} / ${plan.targetSets}</div>
+          </div>
+          <div class="mini-card">
+            <div class="timer-row">
+              <div>
+                <div class="slot-kicker">${escapeHtml(phaseLabel)}</div>
+                <div class="timer-display" id="hiitTimerDisplay">${formatSeconds(getHiitRemainingSeconds())}</div>
+              </div>
+              <div class="button-row">
+                ${roundButton}
+                ${plan.timedWork ? `<button class="secondary-button" type="button" data-action="hiit-rest" ${timer.running || state.hiit.setsDone >= plan.targetSets ? "disabled" : ""}>Start rust</button>` : ""}
+                <button class="secondary-button" type="button" data-action="hiit-stop">Stop</button>
+                <button class="ghost-button" type="button" data-action="hiit-reset">Reset sets</button>
+              </div>
+            </div>
+          </div>
+          <div class="nudge-line">Wake lock stays active while the HIIT timer is running. Each phase ends with a clear beep.</div>
+        </article>
+      `;
+    }
+
+    function renderRecoveryGuidance(plan) {
+      let sections = [];
+      let summaryLabel = "Richtlijnen";
+
+      if (plan.effectiveSessionType === "breatheRest") {
+        sections = [
+          { heading: "Today", items: ["Breathing.", "Rest.", "Optionally take an easy walk if that naturally feels good."] }
+        ];
+      } else if (plan.effectiveSessionType === "zone2") {
+        sections = [
+          {
+            heading: "Zone 2-regel",
+            items: [
+              "Rustig en technisch: je moet het gevoel hebben dat je nog lang door kunt.",
+              "Geen verzuring, geen grip-pomp en geen hijgen."
+            ]
+          }
+        ];
+      } else if (plan.effectiveSessionType === "hiit") {
+        sections = [
+          {
+            heading: "HIIT-regel",
+            items: [
+              "Pittig en explosief, maar technisch strak.",
+              "Stop met het gevoel dat je nog 1-2 rondes had gekund.",
+              "Geen techniekverlies, survival of leegtrekker."
+            ]
+          }
+        ];
+      } else if (plan.effectiveSessionType === "recovery") {
+        summaryLabel = "Recovery day";
+        const recoveryContent = plan.band.key === "high"
+          ? RECOVERY_CONTENT[7]
+          : plan.band.key === "medium"
+            ? RECOVERY_CONTENT[4]
+            : null;
+        sections = recoveryContent
+          ? recoveryContent.sections
+          : [{ heading: plan.recoveryDose.title, items: plan.recoveryDose.guidance }];
+      }
+
+      const sectionsHtml = sections.map((section) => `
+        <div class="mini-card" style="margin-top: 12px;">
+          <h4>${escapeHtml(section.heading)}</h4>
+          <ul class="detail-list">
+            ${section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
+
+      return `
+        <details class="accordion" style="margin-top: 16px;">
+          <summary>${escapeHtml(summaryLabel)}</summary>
+          <div class="accordion-body">
+            ${sectionsHtml}
+          </div>
+        </details>
+      `;
+    }
+
+    function bindWorkoutControls() {
+      bindTimerControls();
+
+      document.querySelectorAll('[data-action="slot-input"]').forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const slotId = event.target.getAttribute("data-slot-id");
+          const slot = findWorkoutSlot(slotId);
+          if (!slot) {
+            return;
+          }
+          slot.inputValue = event.target.value;
+          saveState();
+        });
+      });
+
+      document.querySelectorAll('[data-action="nudge"]').forEach((button) => {
+        button.addEventListener("click", () => {
+          const slotId = button.getAttribute("data-slot-id");
+          const direction = button.getAttribute("data-direction");
+          const slot = findWorkoutSlot(slotId);
+          if (!slot) {
+            return;
+          }
+          slot.nudgeChoice = slot.nudgeChoice === direction ? null : direction;
+          saveState();
+          renderToday();
+        });
+      });
+
+      document.querySelectorAll('[data-action="set-adjust"]').forEach((button) => {
+        button.addEventListener("click", () => {
+          const slotId = button.getAttribute("data-slot-id");
+          const delta = Number(button.getAttribute("data-delta"));
+          const slot = findWorkoutSlot(slotId);
+          if (!slot) {
+            return;
+          }
+          slot.setsDone = Math.max(0, (Number(slot.setsDone) || 0) + delta);
+          saveState();
+          renderToday();
+        });
+      });
+
+      const finishButton = document.getElementById("finishWorkoutButton");
+      if (finishButton) {
+        finishButton.addEventListener("click", handleFinishWorkout);
+      }
+    }
+
+    function bindRecoveryGateControls() {
+      document.querySelectorAll('[data-action="recovery-slider"]').forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const key = event.target.getAttribute("data-key");
+          const value = Number(event.target.value);
+          const draft = {
+            ...createDefaultRecoveryCheckin(),
+            ...(getTodayRecoveryCheckin() || {})
+          };
+          draft[key] = value;
+          state.recoveryCheckins[getTodayKey()] = draft;
+          const label = document.getElementById("recoveryValue-" + key);
+          if (label) {
+            label.textContent = value;
+          }
+          const total = getRecoveryTotal(draft);
+          const band = getRecoveryBand(total);
+          const totalLabel = document.getElementById("recoveryTotalValue");
+          const bandLabel = document.getElementById("recoveryBandValue");
+          if (totalLabel) {
+            totalLabel.textContent = total + "/15";
+          }
+          if (bandLabel) {
+            bandLabel.textContent = band.label;
+          }
+          saveState();
+        });
+      });
+
+      const startButton = document.getElementById("startSessionButton");
+      if (startButton) {
+        startButton.addEventListener("click", () => {
+          const draft = {
+            ...createDefaultRecoveryCheckin(),
+            ...(getTodayRecoveryCheckin() || {})
+          };
+          draft.submittedAt = new Date().toISOString();
+          state.recoveryCheckins[getTodayKey()] = draft;
+          saveState();
+          renderApp();
+          switchTab(TABS.TODAY);
+        });
+      }
+    }
+
+    function bindTimerControls() {
+      document.querySelectorAll('[data-action="group-timer-start"]').forEach((button) => {
+        button.addEventListener("click", () => {
+          startRestTimer(button.getAttribute("data-timer-key"), Number(button.getAttribute("data-duration")));
+        });
+      });
+
+      document.querySelectorAll('[data-action="group-timer-stop"]').forEach((button) => {
+        button.addEventListener("click", () => stopRestTimer(button.getAttribute("data-timer-key")));
+      });
+
+      const hiitWeightInput = document.querySelector('[data-action="hiit-weight"]');
+      if (hiitWeightInput) {
+        hiitWeightInput.addEventListener("input", (event) => updateHiitWeight(event.target.value));
+      }
+
+      const hiitRestDurationInput = document.querySelector('[data-action="hiit-rest-duration"]');
+      if (hiitRestDurationInput) {
+        hiitRestDurationInput.addEventListener("change", (event) => updateHiitRestDuration(event.target.value));
+      }
+
+      const hiitStartButton = document.querySelector('[data-action="hiit-start"]');
+      if (hiitStartButton) {
+        hiitStartButton.addEventListener("click", () => startHiitPhase("work"));
+      }
+
+      const hiitCompleteButton = document.querySelector('[data-action="hiit-complete"]');
+      if (hiitCompleteButton) {
+        hiitCompleteButton.addEventListener("click", completeHiitRound);
+      }
+
+      const hiitRestButton = document.querySelector('[data-action="hiit-rest"]');
+      if (hiitRestButton) {
+        hiitRestButton.addEventListener("click", () => startHiitPhase("rest"));
+      }
+
+      const hiitStopButton = document.querySelector('[data-action="hiit-stop"]');
+      if (hiitStopButton) {
+        hiitStopButton.addEventListener("click", stopHiitTimer);
+      }
+
+      const hiitResetButton = document.querySelector('[data-action="hiit-reset"]');
+      if (hiitResetButton) {
+        hiitResetButton.addEventListener("click", resetHiitSets);
+      }
+    }
+
+    function findWorkoutSlot(slotId) {
+      if (!state.currentWorkout) {
+        return null;
+      }
+      return state.currentWorkout.slots.find((slot) => slot.id === slotId) || null;
+    }
+
+    function handleEditRecoveryCheckin() {
+      const todayKey = getTodayKey();
+      const current = state.recoveryCheckins[todayKey];
+      if (!current) {
+        renderApp();
+        return;
+      }
+      state.recoveryCheckins[todayKey] = {
+        ...current,
+        submittedAt: null
+      };
+      saveState();
+      renderApp();
+      switchTab(TABS.TODAY);
+    }
+
+    function handleFinishWorkout() {
+      if (!state.currentWorkout) {
+        return;
+      }
+
+      const todayPlan = getTodayPlan();
+      const workout = state.currentWorkout;
+      workout.slots.forEach((slot) => {
+        if (slot.exercise) {
+          const record = getExerciseRecord(slot.exercise);
+          if (slot.inputValue && slot.inputValue.trim()) {
+            record.lastValue = slot.inputValue.trim();
+          }
+          record.pendingNudge = slot.nudgeChoice || null;
+        }
+      });
+
+      state.history.unshift({
+        id: "history-" + Date.now(),
+        type: "training",
+        sessionType: "strength",
+        title: workout.programDayTitle || "Iron Frame",
+        completedAt: new Date().toISOString(),
+        recoveryBand: todayPlan.band ? todayPlan.band.label : "",
+        recoveryTotal: todayPlan.total || null,
+        periodization: workout.periodization || getPeriodizationPhase(),
+        slots: workout.slots.map((slot) => ({
+          label: slot.label,
+          subcategory: slot.subcategory,
+          exercise: slot.exercise,
+          prescription: slot.prescription || "",
+          value: slot.inputValue || ""
+        }))
+      });
+
+      state.trainingSessionsCompleted += 1;
+      if (!state.periodization || state.periodization.mode === "auto") {
+        state.periodization = state.periodization || { mode: "auto", autoCompletedStrengthSessions: 0 };
+        state.periodization.autoCompletedStrengthSessions += 1;
+      }
+      state.currentWorkout = null;
+      saveState();
+      launchConfetti();
+      renderApp();
+      switchTab(TABS.TODAY);
+    }
+
+    function handleSkipDay() {
+      const todayPlan = getTodayPlan();
+      if (state.currentWorkout && state.currentWorkout.rotationSnapshot) {
+        state.rotations = cloneRotations(state.currentWorkout.rotationSnapshot);
+      }
+      state.history.unshift({
+        id: "history-" + Date.now(),
+        type: "skip",
+        sessionType: todayPlan.effectiveSessionType || todayPlan.baseSessionType,
+        title: todayPlan.title || "Session skipped",
+        completedAt: new Date().toISOString(),
+        recoveryBand: todayPlan.band ? todayPlan.band.label : "",
+        recoveryTotal: todayPlan.total || null,
+        slots: []
+      });
+
+      state.currentWorkout = null;
+      saveState();
+      renderApp();
+      switchTab(TABS.TODAY);
+    }
+
+    function handleFinishRecoveryDay() {
+      const todayPlan = getTodayPlan();
+      const hiitPlan = todayPlan.effectiveSessionType === "hiit" ? getCurrentHiitPlan() : null;
+      const zone2Plan = todayPlan.effectiveSessionType === "zone2" ? todayPlan.conditioningPlan : null;
+      if (hiitPlan) {
+        advanceHiitRotation();
+      }
+      if (zone2Plan) {
+        advanceZone2Rotation();
+      }
+      state.history.unshift({
+        id: "history-" + Date.now(),
+        type: "recovery-finish",
+        sessionType: todayPlan.effectiveSessionType,
+        title: todayPlan.title,
+        completedAt: new Date().toISOString(),
+        recoveryBand: todayPlan.band ? todayPlan.band.label : "",
+        recoveryTotal: todayPlan.total || null,
+        hiitFinisher: hiitPlan ? formatHiitPlan(hiitPlan) : null,
+        conditioningSummary: hiitPlan
+          ? formatHiitPlan(hiitPlan)
+          : zone2Plan
+            ? zone2Plan.name + ": " + zone2Plan.minutes + " minuten - " + zone2Plan.format.join(" - ") + "."
+            : null,
+        hiitWeight: hiitPlan ? (state.hiit.weights[getHiitSessionKey(hiitPlan)] || "") : "",
+        hiitSetsDone: hiitPlan ? (state.hiit.setsDone || 0) : 0,
+        slots: []
+      });
+
+      state.currentWorkout = null;
+      saveState();
+      launchConfetti();
+      renderApp();
+      switchTab(TABS.TODAY);
+    }
+
+    function renderOptions() {
+      const view = document.getElementById("optionsView");
+      const nextDay = IRON_FRAME_DAYS[state.rotations.mainOrderIndex % IRON_FRAME_DAYS.length];
+      const periodization = getPeriodizationPhase();
+      const periodizationModes = [
+        { key: "auto", label: "Automatisch", detail: "16 Hyper, 4 Deload, 16 Strength, 4 Deload." },
+        { key: "hypertrophy", label: "Hypertrophy vasthouden", detail: "Blijf op hypertrofievoorschriften; automatische voortgang pauzeert." },
+        { key: "strength", label: "Strength vasthouden", detail: "Blijf op krachtvoorschriften; automatische voortgang pauzeert." }
+      ];
+      const conditioningCycleIndex = getCurrentConditioningCycleIndex() % CONDITIONING_CYCLES.length;
+      const conditioningCards = CONDITIONING_CYCLES.map((cycle, index) => `
+        <div class="mini-card">
+          <h4>Week ${index + 1}${index === conditioningCycleIndex ? " - huidig" : ""}</h4>
+          <ul class="detail-list">
+            <li><strong>Zone 2:</strong> ${escapeHtml(cycle.zone2.name)}</li>
+            <li><strong>HIIT:</strong> ${escapeHtml(cycle.hiit.name)}</li>
+          </ul>
+        </div>
+      `).join("");
+      const libraryCards = IRON_FRAME_DAYS.map((day) => {
+        const subList = day.slots.map((slot) => {
+          return `<li><strong>${escapeHtml(slot.block)}:</strong> ${escapeHtml(slot.exercise)} - ${escapeHtml(getPeriodizedPrescription(slot, periodization))}</li>`;
+        }).join("");
+        return `
+          <div class="mini-card">
+            <h4>${escapeHtml(day.title)}</h4>
+            <ul class="detail-list">${subList}</ul>
+          </div>
+        `;
+      }).join("");
+
+      const historyItems = state.history.length
+        ? state.history.slice(0, 12).map((item) => {
+            const summary = item.type === "training"
+              ? item.slots.map((slot) => {
+                  const line = [slot.label, slot.exercise, slot.prescription].filter(Boolean).join(" - ");
+                  return slot.value ? line + " (" + slot.value + ")" : line;
+                }).join(" | ")
+              : item.type === "recovery-finish"
+                ? (item.conditioningSummary || item.hiitFinisher || "Session completed according to recovery guidance.")
+                : "Session skipped.";
+            return `
+              <article class="history-item">
+                <h4>${escapeHtml(item.title)}</h4>
+                <div class="day-badges">
+                  ${item.sessionType ? `<div class="badge">${escapeHtml(SESSION_LABELS[item.sessionType] || item.sessionType)}</div>` : ""}
+                  ${item.periodization && item.periodization.label ? `<div class="badge">${escapeHtml(item.periodization.label)}</div>` : ""}
+                  ${item.recoveryTotal ? `<div class="badge">${escapeHtml(item.recoveryTotal + "/15")}</div>` : ""}
+                </div>
+                <div class="history-meta">${escapeHtml(formatDateTime(item.completedAt))}${item.sessionType ? " - " + escapeHtml(SESSION_LABELS[item.sessionType] || item.sessionType) : ""}${item.recoveryTotal ? " - " + escapeHtml(item.recoveryTotal + "/15") : ""}</div>
+                <div class="history-summary">${escapeHtml(summary)}</div>
+              </article>
+            `;
+          }).join("")
+        : `
+          <article class="history-item">
+            <h4>No history yet</h4>
+            <div class="subtle">Once you complete or skip sessions, a simple logbook will appear here.</div>
+          </article>
+        `;
+
+      view.innerHTML = `
+        <div class="stack">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2>Options</h2>
+                <p class="subtle">Program overview, settings and history for Iron Frame.</p>
+              </div>
+            </div>
+            <div class="mini-card">
+              <h3>Iron Frame logic</h3>
+              <p class="subtle">The session rotation follows the logbook and recovery gate. The priority day cycles through squat, push, pull and hinge. A very low recovery score overrides hard training; completed strength sessions drive the periodization.</p>
+            </div>
+            <div class="mini-card" style="margin-top: 14px;">
+              <h3>${escapeHtml(periodization.label)}</h3>
+              <p class="subtle">${escapeHtml(periodization.summary)}</p>
+              <p class="muted-note">${escapeHtml(periodization.guidance)}</p>
+              <div class="day-badges">
+                <div class="badge">Fasesessie ${periodization.phaseSessionNumber}/${periodization.sessionCount}</div>
+                <div class="badge">Ronde ${Math.floor(periodization.phaseSessionIndex / IRON_FRAME_DAYS.length) + 1}/4</div>
+                <div class="badge">Cyclus ${periodization.cycleNumber}</div>
+                ${periodization.locked ? `<div class="badge">Vastgezet</div>` : ""}
+              </div>
+              <p class="muted-note">16 Hypertrophy-sessies, 4 Deload-sessies, 16 Strength-sessies en 4 Deload-sessies. Alleen afgeronde krachtsessies tellen mee.</p>
+            </div>
+            <div class="mini-card" style="margin-top: 14px;">
+              <h3>Fasekeuze</h3>
+              <p class="subtle">Zet een fase vast of laat Iron Frame automatisch periodiseren.</p>
+              <div class="button-row" style="margin-top: 14px;">
+                ${periodizationModes.map((mode) => `
+                  <button
+                    class="${state.periodization.mode === mode.key ? "primary-button" : "secondary-button"}"
+                    type="button"
+                    data-action="periodization-mode"
+                    data-mode="${escapeHtml(mode.key)}"
+                    title="${escapeHtml(mode.detail)}"
+                  >${escapeHtml(mode.label)}</button>
+                `).join("")}
+              </div>
+              <p class="muted-note">${escapeHtml(periodizationModes.find((mode) => mode.key === state.periodization.mode).detail)}</p>
+            </div>
+            <div class="mini-card" style="margin-top: 14px;">
+              <h3>Next focus day</h3>
+              <p class="subtle">${escapeHtml(nextDay.title)}</p>
+            </div>
+            <div class="button-row">
+              <button class="ghost-button" type="button" id="resetButton">Reset all</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h3>Exercise overview</h3>
+                <p class="subtle">Main patterns, subcategories and current Iron Frame exercise options in one place.</p>
+              </div>
+            </div>
+            <div class="library-grid">
+              ${libraryCards}
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h3>Conditioning cycle</h3>
+                <p class="subtle">Elke twee weken komen alle vier componenten voorbij. Na vier weken heeft elke component zowel Zone 2 als HIIT gehad.</p>
+              </div>
+            </div>
+            <div class="library-grid">
+              ${conditioningCards}
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h3>History</h3>
+                <p class="subtle">Recent completed or skipped sessions.</p>
+              </div>
+            </div>
+            <div class="history-grid">
+              ${historyItems}
+            </div>
+          </article>
+        </div>
+      `;
+
+      document.getElementById("resetButton").addEventListener("click", handleReset);
+      document.querySelectorAll('[data-action="periodization-mode"]').forEach((button) => {
+        button.addEventListener("click", () => {
+          const mode = button.getAttribute("data-mode");
+          if (!["auto", "hypertrophy", "strength"].includes(mode)) {
+            return;
+          }
+          state.periodization.mode = mode;
+          if (state.currentWorkout) {
+            const phase = getPeriodizationPhase();
+            state.currentWorkout.periodization = phase;
+            state.currentWorkout.slots.forEach((slot) => {
+              slot.prescription = getPeriodizedPrescription({
+                block: slot.label,
+                exercise: slot.exercise,
+                prescription: slot.basePrescription || slot.prescription
+              }, phase);
+            });
+          }
+          saveState();
+          renderApp();
+          switchTab(TABS.OPTIONS);
+        });
+      });
+    }
+
+    function handleReset() {
+      const confirmed = window.confirm("Are you sure you want to reset all progress, loads, nudges, rotations, and history?");
+      if (!confirmed) {
+        return;
+      }
+      state = createDefaultState();
+      saveState();
+      renderApp();
+      switchTab(TABS.TODAY);
+    }
+
+    function updateHero() {
+      if (isTodayClosed()) {
+        const periodization = getPeriodizationPhase();
+        document.getElementById("heroDayPill").textContent = "Finished - Today";
+        document.getElementById("heroModePill").textContent = periodization.label;
+        document.getElementById("heroProgressPill").textContent = state.trainingSessionsCompleted + " sessions completed";
+        return;
+      }
+
+      const plan = getTodayPlan();
+      const periodization = state.currentWorkout && state.currentWorkout.periodization
+        ? state.currentWorkout.periodization
+        : getPeriodizationPhase();
+      const heroLabel = plan.pendingCheckin
+        ? "Recovery start"
+        : (SESSION_LABELS[plan.effectiveSessionType] || plan.title);
+      const heroDetail = plan.pendingCheckin
+        ? (SESSION_LABELS[plan.baseSessionType] || "Session")
+        : (plan.band.label + " - " + plan.total + "/15");
+      document.getElementById("heroDayPill").textContent = heroLabel + " - " + heroDetail;
+      document.getElementById("heroModePill").textContent = periodization.label;
+      document.getElementById("heroProgressPill").textContent = state.trainingSessionsCompleted + " sessions completed";
+    }
+
+    function switchTab(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll(".tab-button").forEach((button) => {
+        button.classList.toggle("active", button.getAttribute("data-tab") === tabName);
+      });
+      document.querySelectorAll(".view").forEach((view) => {
+        const targetId = tabName === TABS.TODAY
+          ? "todayView"
+          : "optionsView";
+        view.classList.toggle("active", view.id === targetId);
+      });
+    }
+
+    function renderApp() {
+      syncTimerState();
+      updateHero();
+      renderToday();
+      renderOptions();
+      switchTab(activeTab || TABS.TODAY);
+      updateTimerDisplay();
+    }
+
+    function launchConfetti() {
+      const layer = document.getElementById("confettiLayer");
+      layer.innerHTML = "";
+      const colors = ["#ff5a00", "#ff9a45", "#8d8d8d", "#f1ece4", "#5a1f0b"];
+
+      for (let index = 0; index < 70; index += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[index % colors.length];
+        piece.style.animationDuration = 2200 + Math.random() * 1800 + "ms";
+        piece.style.animationDelay = Math.random() * 120 + "ms";
+        piece.style.setProperty("--drift", (Math.random() * 38 - 19).toFixed(2) + "vw");
+        piece.style.setProperty("--spin", Math.round(Math.random() * 800 - 400) + "deg");
+        layer.appendChild(piece);
+      }
+
+      window.setTimeout(() => {
+        layer.innerHTML = "";
+      }, 4200);
+    }
+
+    document.querySelectorAll(".tab-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        switchTab(button.getAttribute("data-tab"));
+      });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      syncTimerState();
+      updateTimerDisplay();
+      updateWakeLock();
+    });
+
+    let deferredInstallPrompt = null;
+    const installPanel = document.getElementById("installPanel");
+    const installButton = document.getElementById("installButton");
+    const pwaStatus = document.getElementById("pwaStatus");
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+    if (isStandalone) {
+      pwaStatus.textContent = "Installed";
+    }
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      installPanel.classList.add("visible");
+      pwaStatus.textContent = "Install ready";
+    });
+
+    installButton.addEventListener("click", async () => {
+      if (!deferredInstallPrompt) {
+        return;
+      }
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        installPanel.classList.remove("visible");
+        pwaStatus.textContent = "Installed";
+      }
+      deferredInstallPrompt = null;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      installPanel.classList.remove("visible");
+      deferredInstallPrompt = null;
+      pwaStatus.textContent = "Installed";
+    });
+
+    if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+          .then(() => {
+            if (!isStandalone) {
+              pwaStatus.textContent = "Ready offline";
+            }
+          })
+          .catch(() => {
+            pwaStatus.textContent = "Online mode";
+          });
+      });
+    } else if (window.location.protocol === "file:") {
+      pwaStatus.textContent = "Preview mode";
+    }
+
+    renderApp();
+    switchTab(TABS.TODAY);
+    startTimerLoop();
+  </script>
+</body>
+</html>
