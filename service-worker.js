@@ -1,4 +1,4 @@
-const CACHE_NAME = "iron-frame-v1";
+const CACHE_NAME = "iron-frame-v3";
 const APP_SHELL = [
   "./",
   "./index.html",

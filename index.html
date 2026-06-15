@@ -455,7 +455,8 @@
       font-weight: 600;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input[type="number"] {
       width: 100%;
       border: 1px solid var(--line-strong);
       border-radius: 14px;
@@ -467,7 +468,8 @@
       transition: border-color var(--transition), box-shadow var(--transition);
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus,
+    input[type="number"]:focus {
       border-color: rgba(255, 126, 32, 0.58);
       box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12);
     }
@@ -1090,7 +1092,8 @@
         font-size: 0.82rem;
       }
 
-      input[type="text"] {
+      input[type="text"],
+      input[type="number"] {
         border-radius: 12px;
         padding: 12px 13px;
         font-size: 0.96rem;
@@ -1407,7 +1410,7 @@
     const LS_FOCUS_BAG_KEY = "session_iron_frame_focus_bag_v1";
     const LS_FOCUS_DAY_KEY = "session_iron_frame_focus_day_v1";
     const LS_FOCUS_TODAY_KEY = "session_iron_frame_focus_today_v1";
-    const APP_VERSION = 7;
+    const APP_VERSION = 9;
     const TABS = { TODAY: "today", OPTIONS: "options" };
     const RECOVERY_FIELDS = [
       { key: "energy", label: "Energy" },
@@ -1468,7 +1471,14 @@
         focus: "Zware squat + extra unilateral squat.",
         tertiary: "Biceps/pull-accessoire in loaded squatpositie.",
         slots: [
-          { block: "Primer", exercise: "Get-up", prescription: "1-2x1 per kant" },
+          {
+            block: "Primer",
+            exercise: "Get-up",
+            prescription: "1-2x1 per side",
+            ballisticSkill: "Two-hand swing",
+            ballisticPrescription: "2x10",
+            ballisticGuidance: "Light and crisp. Ballistic skill first; no conditioning pace."
+          },
           { block: "A1", exercise: "Double front squat", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Chin-up", prescription: "2-3x6-12", role: "Wederpatroon" },
           { block: "B1", exercise: "Double RDL", prescription: "2x8-12" },
@@ -1483,7 +1493,14 @@
         focus: "Verticale push + horizontale push.",
         tertiary: "C2 is tertiaire hinge / ballistic skill. Niet conditioneel maken.",
         slots: [
-          { block: "Primer", exercise: "Two-hands anyhow", prescription: "1-3 singles per kant" },
+          {
+            block: "Primer",
+            exercise: "Two-hands anyhow",
+            prescription: "1-3 singles per side",
+            ballisticSkill: "Clean & jerk",
+            ballisticPrescription: "2x3 per side",
+            ballisticGuidance: "Light technical practice. Stop well before fatigue or speed loss."
+          },
           { block: "A1", exercise: "Military press", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Single-leg deadlift", prescription: "2-3x8-12 per kant", role: "Main lift van hinge" },
           { block: "B1", exercise: "Gorilla row", prescription: "2x8-12" },
@@ -1498,7 +1515,14 @@
         focus: "Verticale pull + extra horizontale pull.",
         tertiary: "Double front squat komt terug met minder volume dan dag 1. C2 is laterale loaded mobility.",
         slots: [
-          { block: "Primer", exercise: "Windmill", prescription: "1-2x2-3 per kant" },
+          {
+            block: "Primer",
+            exercise: "Windmill",
+            prescription: "1-2x2-3 per side",
+            ballisticSkill: "Push press",
+            ballisticPrescription: "2x3-5 per side",
+            ballisticGuidance: "Light technical practice. Keep every rep fast and controlled."
+          },
           { block: "A1", exercise: "Chin-up", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Double front squat", prescription: "2-3x8-12", role: "Main lift van squat" },
           { block: "B1", exercise: "Double floor press", prescription: "2x8-12" },
@@ -1513,7 +1537,14 @@
         focus: "Hinge + extra glutevolume.",
         tertiary: "A2 is main lift van push. C2 is tertiaire push.",
         slots: [
-          { block: "Primer", exercise: "Bent press", prescription: "1-2x1-3 per kant" },
+          {
+            block: "Primer",
+            exercise: "Bent press",
+            prescription: "1-2x1-3 per side",
+            ballisticSkill: "Snatch",
+            ballisticPrescription: "2x3 per side",
+            ballisticGuidance: "Light technical practice. Stop before grip, breathing or technique deteriorates."
+          },
           { block: "A1", exercise: "Single-leg deadlift", prescription: "3-6x6-12 per kant", role: "Focus main lift" },
           { block: "A2", exercise: "Military press", prescription: "2-3x8-12", role: "Main lift van push" },
           { block: "B1", exercise: "Step-up", prescription: "2x8-12 per been" },
@@ -1564,67 +1595,69 @@
       }
     ];
 
+    const ZONE2_PLAN = {
+      name: "Zone 2",
+      duration: { low: 30, medium: 40, high: 45 },
+      modalities: ["Crosstrainer", "Easy running", "Cycling", "Incline walking", "Rowing"],
+      format: [
+        "Use low-pressure, rhythmic movement at a stable aerobic intensity.",
+        "Choose a pace that feels smooth and sustainable for the full session.",
+        "Grip, heavy bracing or local muscular burn must not become the limiting factor."
+      ],
+      goal: "Build aerobic capacity with minimal local muscular fatigue and recovery cost."
+    };
+
     const CONDITIONING_CYCLES = [
       {
-        zone2: {
-          name: "Carry Zone 2",
-          duration: { low: 20, medium: 20, high: 20 },
-          format: ["Rustige loaded carry-walk", "Wissel handen waar nodig", "Suitcase, farmer en rack mogen afwisselen", "Stop ruim voor gripfalen"],
-          goal: "Rustige aerobe prikkel + romp, grip en houding."
-        },
         hiit: {
           name: "Snatch HIIT",
-          rounds: { low: 5, medium: 6, high: 7 },
-          restSec: 120,
-          format: ["5 snatches links", "5 snatches rechts", "90-120 sec rust"],
-          goal: "Ballistic pull/overhead power."
+          sets: 14,
+          workSec: 22,
+          restSec: 44,
+          totalDuration: "15:24",
+          prescription: "10 reps per set",
+          distribution: "Alternate left and right each set: 7 sets per side.",
+          sideCue: "alternate",
+          goal: "Repeatedly raise heart rate through crisp, technically controlled snatches."
         }
       },
       {
-        zone2: {
-          name: "Swing Zone 2",
-          duration: { low: 30, medium: 35, high: 40 },
-          format: ["Elke minuut: 5 two-hand swings", "Rest van de minuut: rust en neusademhaling"],
-          goal: "A+A-achtige aerobe hinge-practice."
-        },
-        hiit: {
-          name: "Clean & Jerk HIIT",
-          rounds: { low: 5, medium: 6, high: 7 },
-          restSec: 120,
-          format: ["3 clean & jerks links", "3 clean & jerks rechts", "90-120 sec rust"],
-          goal: "Ballistic push/fullbody power."
-        }
-      },
-      {
-        zone2: {
-          name: "Snatch Walk Zone 2",
-          duration: { low: 15, medium: 20, high: 25 },
-          format: ["1 snatch", "Zakken naar rack", "1 stap naar voren", "Herhalen en elke 5 reps van arm wisselen"],
-          goal: "Snatch-skill + rustige aerobe flow."
-        },
-        hiit: {
-          name: "Carry HIIT",
-          rounds: { low: 6, medium: 7, high: 8 },
-          timedWork: true,
-          workSec: 25,
-          restSec: 90,
-          format: ["20-30 sec zware carry", "60-90 sec rust"],
-          goal: "Zware romp, grip en houding + hartslagpiek."
-        }
-      },
-      {
-        zone2: {
-          name: "Clean & Jerk Zone 2",
-          duration: { low: 15, medium: 20, high: 25 },
-          format: ["Elke 30 seconden: 1 clean & jerk", "Links en rechts afwisselen"],
-          goal: "Rustige ballistic push/fullbody skill."
-        },
         hiit: {
           name: "Swing HIIT",
-          rounds: { low: 6, medium: 7, high: 8 },
-          restSec: 90,
-          format: ["10 krachtige two-hand swings", "75-90 sec rust"],
-          goal: "Ballistic hinge-power."
+          sets: 16,
+          workSec: 18,
+          restSec: 36,
+          totalDuration: "14:24",
+          prescription: "10 reps per set",
+          distribution: "One-arm: alternate 8 left and 8 right. Two-arm: complete 16 total sets.",
+          sideCue: "one-arm",
+          goal: "Repeatedly raise heart rate through powerful, repeatable swings."
+        }
+      },
+      {
+        hiit: {
+          name: "Clean & Jerk HIIT",
+          sets: 12,
+          workSec: 25,
+          restSec: 50,
+          totalDuration: "15:00",
+          prescription: "5 reps per set",
+          distribution: "Alternate left and right each set: 6 sets per side.",
+          sideCue: "alternate",
+          goal: "Repeatedly raise heart rate through controlled full-body power."
+        }
+      },
+      {
+        hiit: {
+          name: "Loaded Carry HIIT",
+          sets: 16,
+          workSec: 40,
+          restSec: 20,
+          totalDuration: "16:00",
+          prescription: "Carry continuously for 40 seconds",
+          distribution: "Suitcase or rack carry: alternate 8 left and 8 right.",
+          sideCue: "alternate",
+          goal: "Use a lighter continuous carry to raise heart rate without turning grip or bracing into the limiter."
         }
       }
     ];
@@ -1766,11 +1799,16 @@
             beeped: false
           }
         },
+        zone2: {
+          modality: ZONE2_PLAN.modalities[0]
+        },
         hiit: {
           activeOptionIndex: null,
           activePlanName: null,
           activeMode: "full",
           setsDone: 0,
+          heartRateMin: 143,
+          heartRateMax: 173,
           weights: {},
           timer: {
             endTime: null,
@@ -1856,6 +1894,10 @@
             ...base.timers.groupC,
             ...((saved.timers && saved.timers.groupC) || {})
           }
+        },
+        zone2: {
+          ...base.zone2,
+          ...(saved.zone2 || {})
         },
         hiit: {
           ...base.hiit,
@@ -2289,11 +2331,13 @@
 
     function getCurrentZone2Plan(bandKey) {
       const index = getCurrentConditioningCycleIndex();
-      const plan = getCurrentConditioningCycle().zone2;
       return {
-        ...plan,
+        ...ZONE2_PLAN,
         cycleIndex: index % CONDITIONING_CYCLES.length,
-        minutes: plan.duration[bandKey] || plan.duration.medium
+        minutes: ZONE2_PLAN.duration[bandKey] || ZONE2_PLAN.duration.medium,
+        selectedModality: ZONE2_PLAN.modalities.includes(state.zone2.modality)
+          ? state.zone2.modality
+          : ZONE2_PLAN.modalities[0]
       };
     }
 
@@ -2367,8 +2411,8 @@
           band,
           baseSessionType,
           effectiveSessionType: "zone2",
-          title: conditioningPlan.name,
-          subtitle: conditioningPlan.minutes + " minuten",
+          title: conditioningPlan.selectedModality,
+          subtitle: conditioningPlan.minutes + " minutes",
           summary: conditioningPlan.goal,
           zone2Minutes: conditioningPlan.minutes,
           conditioningPlan
@@ -2377,7 +2421,7 @@
 
       if (baseSessionType === "hiit") {
         const conditioningPlan = getCurrentConditioningCycle().hiit;
-        const hiitSets = getConditioningRoundTarget(conditioningPlan.rounds, band.key);
+        const hiitSets = conditioningPlan.sets;
         return {
           dateKey,
           checkin,
@@ -2386,7 +2430,7 @@
           baseSessionType,
           effectiveSessionType: "hiit",
           title: conditioningPlan.name,
-          subtitle: hiitSets + " rondes",
+          subtitle: hiitSets + " sets",
           summary: conditioningPlan.goal,
           hiitSets,
           conditioningPlan
@@ -2448,6 +2492,9 @@
         exercise: template.exercise,
         prescription: getPeriodizedPrescription(template, phase),
         basePrescription: template.prescription,
+        ballisticSkill: template.ballisticSkill || "",
+        ballisticPrescription: template.ballisticPrescription || "",
+        ballisticGuidance: template.ballisticGuidance || "",
         previousText: buildPreviousText(record.lastValue, record.pendingNudge),
         inputValue: record.lastValue || "",
         nudgeChoice: null,
@@ -2543,7 +2590,7 @@
       const currentIndex = getCurrentConditioningCycleIndex();
       const plan = getCurrentConditioningCycle().hiit;
       const todayPlan = getTodayPlan();
-      const targetSets = todayPlan.hiitSets || getConditioningRoundTarget(plan.rounds, "medium");
+      const targetSets = todayPlan.hiitSets || plan.sets;
       return {
         ...plan,
         optionIndex: currentIndex % CONDITIONING_CYCLES.length,
@@ -2553,12 +2600,11 @@
     }
 
     function formatHiitPlan(plan) {
-      return plan.name + ": " + plan.targetSets + " rondes - " + plan.format.join(" - ") + ".";
+      return plan.name + ": " + plan.targetSets + " sets, " + plan.workSec + " sec work / " + plan.restSec + " sec rest, " + plan.totalDuration + " total intervals.";
     }
 
     function getHiitRestSeconds(plan) {
-      const savedRest = Number(state.hiit.restDurations[getHiitSessionKey(plan)]);
-      return savedRest > 0 ? savedRest : plan.restSec;
+      return plan.restSec;
     }
 
     function advanceHiitRotation() {
@@ -2711,9 +2757,7 @@
         const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
         return timer.phase === "rest"
           ? getHiitRestSeconds(plan)
-          : plan.timedWork
-            ? plan.workSec
-            : 0;
+          : plan.workSec;
       }
       return Math.max(0, Math.ceil((timer.endTime - Date.now()) / 1000));
     }
@@ -2730,9 +2774,16 @@
 
       if (timer.phase === "work") {
         state.hiit.setsDone = Math.min(plan.targetSets, (state.hiit.setsDone || 0) + 1);
-        timer.phase = state.hiit.setsDone >= plan.targetSets ? "done" : "rest";
-        timer.running = false;
-        timer.endTime = null;
+        if (state.hiit.setsDone >= plan.targetSets) {
+          timer.phase = "done";
+          timer.running = false;
+          timer.endTime = null;
+        } else {
+          timer.phase = "rest";
+          timer.running = true;
+          timer.endTime = Date.now() + (getHiitRestSeconds(plan) * 1000);
+          timer.beeped = false;
+        }
       } else {
         timer.phase = "idle";
         timer.running = false;
@@ -2744,9 +2795,6 @@
 
     function startHiitPhase(phase) {
       const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
-      if (phase === "work" && !plan.timedWork) {
-        return;
-      }
       if (state.hiit.setsDone >= plan.targetSets && phase === "work") {
         state.hiit.setsDone = 0;
       }
@@ -2785,6 +2833,7 @@
     function stopHiitTimer() {
       state.hiit.timer.running = false;
       state.hiit.timer.endTime = null;
+      state.hiit.timer.phase = "idle";
       state.hiit.timer.beeped = false;
       saveState();
       updateWakeLock();
@@ -2808,12 +2857,22 @@
       saveState();
     }
 
-    function updateHiitRestDuration(value) {
-      const plan = getCurrentHiitPlan(state.hiit.activeMode === "half");
-      const restSeconds = Math.max(15, Math.min(240, Number(value) || plan.restSec));
-      state.hiit.restDurations[getHiitSessionKey(plan)] = restSeconds;
-      if (!state.hiit.timer.running && state.hiit.timer.phase === "rest") {
-        state.hiit.timer.endTime = null;
+    function updateZone2Modality(value) {
+      if (!ZONE2_PLAN.modalities.includes(value)) {
+        return;
+      }
+      state.zone2.modality = value;
+      saveState();
+      renderApp();
+    }
+
+    function updateHiitHeartRate(key, value) {
+      const fallback = key === "heartRateMin" ? 143 : 173;
+      const nextValue = Math.max(60, Math.min(240, Number(value) || fallback));
+      state.hiit[key] = nextValue;
+      if (state.hiit.heartRateMin >= state.hiit.heartRateMax) {
+        state.hiit.heartRateMin = 143;
+        state.hiit.heartRateMax = 173;
       }
       saveState();
       renderApp();
@@ -3138,6 +3197,16 @@
       const prescriptionMarkup = prescription
         ? `<div class="nudge-line">${escapeHtml(prescription)}</div>`
         : "";
+      const ballisticMarkup = slot.ballisticSkill
+        ? `
+          <div class="mini-card">
+            <p class="slot-kicker">Technical ballistic skill - perform first</p>
+            <h4>${escapeHtml(slot.ballisticSkill)}</h4>
+            <p class="exercise-name">${escapeHtml(slot.ballisticPrescription)}</p>
+            <div class="nudge-line">${escapeHtml(slot.ballisticGuidance)}</div>
+          </div>
+        `
+        : "";
       const setCount = Number(slot.setsDone) || 0;
       const controlsMarkup = `
           <div class="slot-controls">
@@ -3178,6 +3247,7 @@
             </div>
             <div class="slot-chip">${escapeHtml(slot.label)}</div>
           </div>
+          ${ballisticMarkup}
           ${nudgeMarkup}
           ${setTrackerMarkup}
           ${controlsMarkup}
@@ -3219,10 +3289,23 @@
           <div class="slot-top">
             <div>
               <p class="slot-kicker">Zone 2</p>
-              <h4 class="slot-title">${escapeHtml(plan.name)}</h4>
-              <p class="exercise-name">${escapeHtml(plan.minutes)} minuten</p>
+              <h4 class="slot-title">${escapeHtml(plan.selectedModality)}</h4>
+              <p class="exercise-name">${escapeHtml(plan.minutes)} minutes</p>
             </div>
-            <div class="slot-chip">Rustig</div>
+            <div class="slot-chip">Low pressure</div>
+          </div>
+          <div class="mini-card">
+            <h4>Choose your modality</h4>
+            <div class="button-row" style="margin-top: 12px;">
+              ${plan.modalities.map((modality) => `
+                <button
+                  class="${plan.selectedModality === modality ? "primary-button" : "secondary-button"}"
+                  type="button"
+                  data-action="zone2-modality"
+                  data-modality="${escapeHtml(modality)}"
+                >${escapeHtml(modality)}</button>
+              `).join("")}
+            </div>
           </div>
           <div class="mini-card">
             <ul class="detail-list">
@@ -3240,23 +3323,24 @@
       const timer = state.hiit.timer;
       const weightValue = state.hiit.weights[getHiitSessionKey(plan)] || "";
       const restSeconds = getHiitRestSeconds(plan);
+      const nextSide = (state.hiit.setsDone || 0) % 2 === 0 ? "Left" : "Right";
+      const nextSideText = plan.sideCue === "one-arm"
+        ? "Next side if one-arm: " + nextSide
+        : "Next side: " + nextSide;
       const phaseLabel = timer.phase === "work"
-        ? "Werk"
+        ? "Work"
         : timer.phase === "rest"
           ? "Rest"
           : timer.phase === "done"
             ? "Done"
             : "Ready for set";
       const startLabel = timer.running
-        ? "Timer loopt"
+        ? "Timer running"
         : timer.phase === "rest"
-          ? "Start rust"
+          ? "Resume rest"
           : state.hiit.setsDone >= plan.targetSets
             ? "Reset and start"
-            : "Start carry";
-      const roundButton = plan.timedWork
-        ? `<button class="primary-button" type="button" data-action="hiit-start" ${timer.running ? "disabled" : ""}>${escapeHtml(startLabel)}</button>`
-        : `<button class="primary-button" type="button" data-action="hiit-complete" ${timer.running || state.hiit.setsDone >= plan.targetSets ? "disabled" : ""}>Ronde klaar + start rust</button>`;
+            : "Start set";
 
       return `
         <article class="slot-card hiit-panel">
@@ -3279,39 +3363,62 @@
               >
             </label>
             <label class="input-wrap">
-              <span class="input-label">Rest (sec)</span>
+              <span class="input-label">Lower HR limit (bpm)</span>
               <input
-                type="text"
+                type="number"
                 inputmode="numeric"
-                value="${escapeHtml(restSeconds)}"
-                placeholder="E.g. 75"
-                data-action="hiit-rest-duration"
+                min="60"
+                max="240"
+                value="${escapeHtml(state.hiit.heartRateMin)}"
+                data-action="hiit-heart-rate"
+                data-heart-rate-key="heartRateMin"
+              >
+            </label>
+            <label class="input-wrap">
+              <span class="input-label">Upper HR limit (bpm)</span>
+              <input
+                type="number"
+                inputmode="numeric"
+                min="60"
+                max="240"
+                value="${escapeHtml(state.hiit.heartRateMax)}"
+                data-action="hiit-heart-rate"
+                data-heart-rate-key="heartRateMax"
               >
             </label>
             <div class="set-counter">Sets ${state.hiit.setsDone || 0} / ${plan.targetSets}</div>
+          </div>
+          <div class="mini-card">
+            <ul class="detail-list">
+              <li><strong>Session:</strong> 5-minute warm-up, approximately 15 minutes of intervals, 3-5 minute cool-down.</li>
+              <li><strong>Set:</strong> ${escapeHtml(plan.prescription)}.</li>
+              <li><strong>Distribution:</strong> ${escapeHtml(plan.distribution)}</li>
+              <li><strong>Heart rate:</strong> Let the first rounds build gradually. The interval block should move into ${escapeHtml(state.hiit.heartRateMin)}-${escapeHtml(state.hiit.heartRateMax)} bpm.</li>
+              <li><strong>Stop:</strong> End the interval block above ${escapeHtml(state.hiit.heartRateMax)} bpm. End a set earlier whenever technique deteriorates.</li>
+            </ul>
           </div>
           <div class="mini-card">
             <div class="timer-row">
               <div>
                 <div class="slot-kicker">${escapeHtml(phaseLabel)}</div>
                 <div class="timer-display" id="hiitTimerDisplay">${formatSeconds(getHiitRemainingSeconds())}</div>
+                <div class="muted-note">${escapeHtml(plan.workSec)} sec work / ${escapeHtml(restSeconds)} sec rest · ${escapeHtml(nextSideText)}</div>
               </div>
               <div class="button-row">
-                ${roundButton}
-                ${plan.timedWork ? `<button class="secondary-button" type="button" data-action="hiit-rest" ${timer.running || state.hiit.setsDone >= plan.targetSets ? "disabled" : ""}>Start rust</button>` : ""}
+                <button class="primary-button" type="button" data-action="hiit-start" ${timer.running ? "disabled" : ""}>${escapeHtml(startLabel)}</button>
                 <button class="secondary-button" type="button" data-action="hiit-stop">Stop</button>
                 <button class="ghost-button" type="button" data-action="hiit-reset">Reset sets</button>
               </div>
             </div>
           </div>
-          <div class="nudge-line">Wake lock stays active while the HIIT timer is running. Each phase ends with a clear beep.</div>
+          <div class="nudge-line">The timer drives the work-rest structure; heart rate validates the chosen load and pace. Wake lock stays active while the timer is running.</div>
         </article>
       `;
     }
 
     function renderRecoveryGuidance(plan) {
       let sections = [];
-      let summaryLabel = "Richtlijnen";
+      let summaryLabel = "Guidelines";
 
       if (plan.effectiveSessionType === "breatheRest") {
         sections = [
@@ -3320,21 +3427,22 @@
       } else if (plan.effectiveSessionType === "zone2") {
         sections = [
           {
-            heading: "Zone 2-regel",
+            heading: "Zone 2 rule",
             items: [
-              "Rustig en technisch: je moet het gevoel hebben dat je nog lang door kunt.",
-              "Geen verzuring, geen grip-pomp en geen hijgen."
+              "Keep the movement rhythmic, smooth and sustainable for the full 30-45 minutes.",
+              "Avoid local muscular burn, grip fatigue, heavy bracing and breathlessness."
             ]
           }
         ];
       } else if (plan.effectiveSessionType === "hiit") {
         sections = [
           {
-            heading: "HIIT-regel",
+            heading: "HIIT rule",
             items: [
-              "Pittig en explosief, maar technisch strak.",
-              "Stop met het gevoel dat je nog 1-2 rondes had gekund.",
-              "Geen techniekverlies, survival of leegtrekker."
+              "The timer drives the session; heart rate validates the load and pace.",
+              "The first rounds may stay below the lower limit, but heart rate should gradually enter the personal frame.",
+              "If heart rate remains below the lower limit, increase the load or pace next time.",
+              "Stop the interval block above the upper limit. Technique loss always ends a set earlier."
             ]
           }
         ];
@@ -3479,24 +3587,19 @@
         hiitWeightInput.addEventListener("input", (event) => updateHiitWeight(event.target.value));
       }
 
-      const hiitRestDurationInput = document.querySelector('[data-action="hiit-rest-duration"]');
-      if (hiitRestDurationInput) {
-        hiitRestDurationInput.addEventListener("change", (event) => updateHiitRestDuration(event.target.value));
-      }
+      document.querySelectorAll('[data-action="zone2-modality"]').forEach((button) => {
+        button.addEventListener("click", () => updateZone2Modality(button.getAttribute("data-modality")));
+      });
+
+      document.querySelectorAll('[data-action="hiit-heart-rate"]').forEach((input) => {
+        input.addEventListener("change", (event) => {
+          updateHiitHeartRate(event.target.getAttribute("data-heart-rate-key"), event.target.value);
+        });
+      });
 
       const hiitStartButton = document.querySelector('[data-action="hiit-start"]');
       if (hiitStartButton) {
         hiitStartButton.addEventListener("click", () => startHiitPhase("work"));
-      }
-
-      const hiitCompleteButton = document.querySelector('[data-action="hiit-complete"]');
-      if (hiitCompleteButton) {
-        hiitCompleteButton.addEventListener("click", completeHiitRound);
-      }
-
-      const hiitRestButton = document.querySelector('[data-action="hiit-rest"]');
-      if (hiitRestButton) {
-        hiitRestButton.addEventListener("click", () => startHiitPhase("rest"));
       }
 
       const hiitStopButton = document.querySelector('[data-action="hiit-stop"]');
@@ -3564,6 +3667,8 @@
           subcategory: slot.subcategory,
           exercise: slot.exercise,
           prescription: slot.prescription || "",
+          ballisticSkill: slot.ballisticSkill || "",
+          ballisticPrescription: slot.ballisticPrescription || "",
           value: slot.inputValue || ""
         }))
       });
@@ -3624,7 +3729,7 @@
         conditioningSummary: hiitPlan
           ? formatHiitPlan(hiitPlan)
           : zone2Plan
-            ? zone2Plan.name + ": " + zone2Plan.minutes + " minuten - " + zone2Plan.format.join(" - ") + "."
+            ? zone2Plan.selectedModality + ": " + zone2Plan.minutes + " minutes - " + zone2Plan.format.join(" - ") + "."
             : null,
         hiitWeight: hiitPlan ? (state.hiit.weights[getHiitSessionKey(hiitPlan)] || "") : "",
         hiitSetsDone: hiitPlan ? (state.hiit.setsDone || 0) : 0,
@@ -3648,18 +3753,30 @@
         { key: "strength", label: "Strength vasthouden", detail: "Blijf op krachtvoorschriften; automatische voortgang pauzeert." }
       ];
       const conditioningCycleIndex = getCurrentConditioningCycleIndex() % CONDITIONING_CYCLES.length;
-      const conditioningCards = CONDITIONING_CYCLES.map((cycle, index) => `
+      const conditioningCards = `
         <div class="mini-card">
-          <h4>Week ${index + 1}${index === conditioningCycleIndex ? " - huidig" : ""}</h4>
+          <h4>Zone 2</h4>
           <ul class="detail-list">
-            <li><strong>Zone 2:</strong> ${escapeHtml(cycle.zone2.name)}</li>
+            <li><strong>Duration:</strong> 30-45 minutes</li>
+            <li><strong>Options:</strong> ${ZONE2_PLAN.modalities.map((item) => escapeHtml(item)).join(", ")}</li>
+            <li>${escapeHtml(ZONE2_PLAN.goal)}</li>
+          </ul>
+        </div>
+      ` + CONDITIONING_CYCLES.map((cycle, index) => `
+        <div class="mini-card">
+          <h4>Cycle ${index + 1}${index === conditioningCycleIndex ? " - current" : ""}</h4>
+          <ul class="detail-list">
             <li><strong>HIIT:</strong> ${escapeHtml(cycle.hiit.name)}</li>
+            <li>${escapeHtml(cycle.hiit.sets)} sets · ${escapeHtml(cycle.hiit.workSec)} sec work / ${escapeHtml(cycle.hiit.restSec)} sec rest · ${escapeHtml(cycle.hiit.totalDuration)}</li>
           </ul>
         </div>
       `).join("");
       const libraryCards = IRON_FRAME_DAYS.map((day) => {
         const subList = day.slots.map((slot) => {
-          return `<li><strong>${escapeHtml(slot.block)}:</strong> ${escapeHtml(slot.exercise)} - ${escapeHtml(getPeriodizedPrescription(slot, periodization))}</li>`;
+          const ballistic = slot.ballisticSkill
+            ? ` | Technical skill first: ${escapeHtml(slot.ballisticSkill)} - ${escapeHtml(slot.ballisticPrescription)}`
+            : "";
+          return `<li><strong>${escapeHtml(slot.block)}:</strong> ${escapeHtml(slot.exercise)} - ${escapeHtml(getPeriodizedPrescription(slot, periodization))}${ballistic}</li>`;
         }).join("");
         return `
           <div class="mini-card">
@@ -3674,7 +3791,10 @@
             const summary = item.type === "training"
               ? item.slots.map((slot) => {
                   const line = [slot.label, slot.exercise, slot.prescription].filter(Boolean).join(" - ");
-                  return slot.value ? line + " (" + slot.value + ")" : line;
+                  const ballistic = slot.ballisticSkill
+                    ? " | Technical skill: " + slot.ballisticSkill + " - " + slot.ballisticPrescription
+                    : "";
+                  return (slot.value ? line + " (" + slot.value + ")" : line) + ballistic;
                 }).join(" | ")
               : item.type === "recovery-finish"
                 ? (item.conditioningSummary || item.hiitFinisher || "Session completed according to recovery guidance.")
@@ -3765,7 +3885,7 @@
             <div class="card-header">
               <div>
                 <h3>Conditioning cycle</h3>
-                <p class="subtle">Elke twee weken komen alle vier componenten voorbij. Na vier weken heeft elke component zowel Zone 2 als HIIT gehad.</p>
+                <p class="subtle">Zone 2 uses a freely chosen low-pressure modality. HIIT rotates through four fixed work-rest protocols.</p>
               </div>
             </div>
             <div class="library-grid">
