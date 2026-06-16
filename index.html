@@ -1410,7 +1410,7 @@
     const LS_FOCUS_BAG_KEY = "session_iron_frame_focus_bag_v1";
     const LS_FOCUS_DAY_KEY = "session_iron_frame_focus_day_v1";
     const LS_FOCUS_TODAY_KEY = "session_iron_frame_focus_today_v1";
-    const APP_VERSION = 9;
+    const APP_VERSION = 10;
     const TABS = { TODAY: "today", OPTIONS: "options" };
     const RECOVERY_FIELDS = [
       { key: "energy", label: "Energy" },
@@ -2492,9 +2492,7 @@
         exercise: template.exercise,
         prescription: getPeriodizedPrescription(template, phase),
         basePrescription: template.prescription,
-        ballisticSkill: template.ballisticSkill || "",
-        ballisticPrescription: template.ballisticPrescription || "",
-        ballisticGuidance: template.ballisticGuidance || "",
+        guidance: template.guidance || "",
         previousText: buildPreviousText(record.lastValue, record.pendingNudge),
         inputValue: record.lastValue || "",
         nudgeChoice: null,
@@ -2502,6 +2500,25 @@
       };
       record.pendingNudge = null;
       return slot;
+    }
+
+    function createIronFrameSlots(template, index, phase) {
+      if (!template.ballisticSkill) {
+        return [createIronFrameSlot(template, index, phase)];
+      }
+
+      const skillTemplate = {
+        block: template.block,
+        exercise: template.ballisticSkill,
+        prescription: template.ballisticPrescription,
+        role: "Technical ballistic skill",
+        guidance: template.ballisticGuidance
+      };
+
+      return [
+        createIronFrameSlot(skillTemplate, index + "-skill", phase),
+        createIronFrameSlot(template, index, phase)
+      ];
     }
 
     function ensureCurrentWorkout(plan) {
@@ -2516,7 +2533,7 @@
       const rotationSnapshot = cloneRotations(state.rotations);
       const programDay = rotateIronFrameDay();
       const periodization = getPeriodizationPhase();
-      const slots = programDay.slots.map((slot, index) => createIronFrameSlot(slot, index, periodization));
+      const slots = programDay.slots.flatMap((slot, index) => createIronFrameSlots(slot, index, periodization));
 
       state.currentWorkout = {
         id: "workout-" + Date.now(),
@@ -3197,15 +3214,8 @@
       const prescriptionMarkup = prescription
         ? `<div class="nudge-line">${escapeHtml(prescription)}</div>`
         : "";
-      const ballisticMarkup = slot.ballisticSkill
-        ? `
-          <div class="mini-card">
-            <p class="slot-kicker">Technical ballistic skill - perform first</p>
-            <h4>${escapeHtml(slot.ballisticSkill)}</h4>
-            <p class="exercise-name">${escapeHtml(slot.ballisticPrescription)}</p>
-            <div class="nudge-line">${escapeHtml(slot.ballisticGuidance)}</div>
-          </div>
-        `
+      const guidanceMarkup = slot.guidance
+        ? `<div class="nudge-line">${escapeHtml(slot.guidance)}</div>`
         : "";
       const setCount = Number(slot.setsDone) || 0;
       const controlsMarkup = `
@@ -3247,7 +3257,7 @@
             </div>
             <div class="slot-chip">${escapeHtml(slot.label)}</div>
           </div>
-          ${ballisticMarkup}
+          ${guidanceMarkup}
           ${nudgeMarkup}
           ${setTrackerMarkup}
           ${controlsMarkup}
@@ -3667,8 +3677,6 @@
           subcategory: slot.subcategory,
           exercise: slot.exercise,
           prescription: slot.prescription || "",
-          ballisticSkill: slot.ballisticSkill || "",
-          ballisticPrescription: slot.ballisticPrescription || "",
           value: slot.inputValue || ""
         }))
       });
