@@ -456,7 +456,9 @@
     }
 
     input[type="text"],
-    input[type="number"] {
+    input[type="number"],
+    input[type="date"],
+    select {
       width: 100%;
       border: 1px solid var(--line-strong);
       border-radius: 14px;
@@ -469,7 +471,9 @@
     }
 
     input[type="text"]:focus,
-    input[type="number"]:focus {
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    select:focus {
       border-color: rgba(255, 126, 32, 0.58);
       box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.12);
     }
@@ -1410,7 +1414,7 @@
     const LS_FOCUS_BAG_KEY = "session_iron_frame_focus_bag_v1";
     const LS_FOCUS_DAY_KEY = "session_iron_frame_focus_day_v1";
     const LS_FOCUS_TODAY_KEY = "session_iron_frame_focus_today_v1";
-    const APP_VERSION = 11;
+    const APP_VERSION = 12;
     const TABS = { TODAY: "today", OPTIONS: "options" };
     const RECOVERY_FIELDS = [
       { key: "energy", label: "Energy" },
@@ -1951,6 +1955,27 @@
       const month = String(now.getMonth() + 1).padStart(2, "0");
       const day = String(now.getDate()).padStart(2, "0");
       return year + "-" + month + "-" + day;
+    }
+
+    function getLocalDateKey(value) {
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function getDateKeyDaysAgo(daysAgo) {
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function createLocalNoonIso(dateKey) {
+      return new Date(dateKey + "T12:00:00").toISOString();
     }
 
     function isValidFocusLesson(value) {
@@ -3839,10 +3864,71 @@
       switchTab(TABS.TODAY);
     }
 
+    function getBackfillTypeLabel(sessionType) {
+      return SESSION_LABELS[sessionType] || sessionType;
+    }
+
+    function handleBackfillSession() {
+      const dateInput = document.getElementById("backfillDateInput");
+      const typeInput = document.getElementById("backfillTypeInput");
+      const dateKey = dateInput ? dateInput.value : "";
+      const sessionType = typeInput ? typeInput.value : "";
+
+      if (!dateKey || !["strength", "zone2", "hiit", "recovery"].includes(sessionType)) {
+        window.alert("Kies een datum en sessietype.");
+        return;
+      }
+
+      const existingEntry = state.history.find((item) => item.type !== "skip" && item.completedAt && getLocalDateKey(item.completedAt) === dateKey);
+      if (existingEntry) {
+        const proceed = window.confirm("Er staat al een log op deze datum. Toch een extra backfill toevoegen?");
+        if (!proceed) {
+          return;
+        }
+      }
+
+      const isStrength = sessionType === "strength";
+      const title = isStrength
+        ? "Backfilled Strength"
+        : "Backfilled " + getBackfillTypeLabel(sessionType);
+
+      state.history.unshift({
+        id: "backfill-" + Date.now(),
+        type: isStrength ? "training" : "recovery-finish",
+        sessionType,
+        title,
+        completedAt: createLocalNoonIso(dateKey),
+        recoveryBand: "Backfill",
+        recoveryTotal: null,
+        conditioningSummary: sessionType === "zone2"
+          ? "Backfilled Zone 2 session."
+          : sessionType === "hiit"
+            ? "Backfilled HIIT session."
+            : sessionType === "recovery"
+              ? "Backfilled active recovery."
+              : null,
+        slots: []
+      });
+
+      if (isStrength) {
+        state.trainingSessionsCompleted += 1;
+        if (!state.periodization || state.periodization.mode === "auto") {
+          state.periodization = state.periodization || { mode: "auto", autoCompletedStrengthSessions: 0 };
+          state.periodization.autoCompletedStrengthSessions += 1;
+        }
+      }
+
+      state.currentWorkout = null;
+      saveState();
+      renderApp();
+      switchTab(TABS.OPTIONS);
+    }
+
     function renderOptions() {
       const view = document.getElementById("optionsView");
       const nextDay = IRON_FRAME_DAYS[state.rotations.mainOrderIndex % IRON_FRAME_DAYS.length];
       const periodization = getPeriodizationPhase();
+      const yesterdayKey = getDateKeyDaysAgo(1);
       const periodizationModes = [
         { key: "auto", label: "Automatisch", detail: "16 Hyper, 4 Deload, 16 Strength, 4 Deload." },
         { key: "hypertrophy", label: "Hypertrophy vasthouden", detail: "Blijf op hypertrofievoorschriften; automatische voortgang pauzeert." },
@@ -3960,6 +4046,29 @@
               <h3>Next focus day</h3>
               <p class="subtle">${escapeHtml(nextDay.title)}</p>
             </div>
+            <div class="mini-card" style="margin-top: 14px;">
+              <h3>Backfill forgotten session</h3>
+              <p class="subtle">Use this if you trained or recovered but forgot to save it. This repairs the logbook rotation.</p>
+              <div class="slot-controls" style="margin-top: 14px;">
+                <label class="input-wrap">
+                  <span class="input-label">Date</span>
+                  <input type="date" id="backfillDateInput" value="${escapeHtml(yesterdayKey)}">
+                </label>
+                <label class="input-wrap">
+                  <span class="input-label">Session</span>
+                  <select id="backfillTypeInput">
+                    <option value="strength">Strength</option>
+                    <option value="zone2">Zone 2</option>
+                    <option value="hiit">HIIT</option>
+                    <option value="recovery">Active recovery</option>
+                  </select>
+                </label>
+              </div>
+              <div class="button-row" style="margin-top: 14px;">
+                <button class="secondary-button" type="button" id="backfillButton">Add forgotten session</button>
+              </div>
+              <p class="muted-note">Backfilled strength updates the strength-session count and automatic periodization. It does not add sets or loads.</p>
+            </div>
             <div class="button-row">
               <button class="ghost-button" type="button" id="resetButton">Reset all</button>
             </div>
@@ -4004,6 +4113,7 @@
       `;
 
       document.getElementById("resetButton").addEventListener("click", handleReset);
+      document.getElementById("backfillButton").addEventListener("click", handleBackfillSession);
       document.querySelectorAll('[data-action="periodization-mode"]').forEach((button) => {
         button.addEventListener("click", () => {
           const mode = button.getAttribute("data-mode");
