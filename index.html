@@ -1410,7 +1410,7 @@
     const LS_FOCUS_BAG_KEY = "session_iron_frame_focus_bag_v1";
     const LS_FOCUS_DAY_KEY = "session_iron_frame_focus_day_v1";
     const LS_FOCUS_TODAY_KEY = "session_iron_frame_focus_today_v1";
-    const APP_VERSION = 10;
+    const APP_VERSION = 11;
     const TABS = { TODAY: "today", OPTIONS: "options" };
     const RECOVERY_FIELDS = [
       { key: "energy", label: "Energy" },
@@ -1474,10 +1474,10 @@
           {
             block: "Primer",
             exercise: "Get-up",
-            prescription: "1-2x1 per side",
-            ballisticSkill: "Two-hand swing",
-            ballisticPrescription: "2x10",
-            ballisticGuidance: "Light and crisp. Ballistic skill first; no conditioning pace."
+            prescription: "1-2x1 per kant",
+            ballisticSkill: "One-arm swing",
+            ballisticPrescription: "2x5 per kant",
+            ballisticGuidance: "Get-up + swing als Simple & Sinister-koppeling. Technisch fris, geen conditioning pace."
           },
           { block: "A1", exercise: "Double front squat", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Chin-up", prescription: "2-3x6-12", role: "Wederpatroon" },
@@ -1496,17 +1496,17 @@
           {
             block: "Primer",
             exercise: "Two-hands anyhow",
-            prescription: "1-3 singles per side",
-            ballisticSkill: "Clean & jerk",
-            ballisticPrescription: "2x3 per side",
-            ballisticGuidance: "Light technical practice. Stop well before fatigue or speed loss."
+            prescription: "1-3 singles per kant",
+            ballisticSkill: "Push press",
+            ballisticPrescription: "2x3 per kant",
+            ballisticGuidance: "Anyhow organiseert de overheadpositie; push press vertaalt dit naar dynamische verticale kracht."
           },
           { block: "A1", exercise: "Military press", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Single-leg deadlift", prescription: "2-3x8-12 per kant", role: "Main lift van hinge" },
           { block: "B1", exercise: "Gorilla row", prescription: "2x8-12" },
           { block: "B2", exercise: "Goblet squat", prescription: "2x8-12" },
           { block: "C1", exercise: "Bridge floor press", prescription: "2-3x8-12", role: "Specialized push" },
-          { block: "C2", exercise: "Double clean", prescription: "2x5-8", role: "Ballistic skill" }
+          { block: "C2", exercise: "Double high pull", prescription: "2x5-8", role: "Tertiaire hinge / ballistic skill" }
         ]
       },
       {
@@ -1518,16 +1518,16 @@
           {
             block: "Primer",
             exercise: "Windmill",
-            prescription: "1-2x2-3 per side",
-            ballisticSkill: "Push press",
-            ballisticPrescription: "2x3-5 per side",
-            ballisticGuidance: "Light technical practice. Keep every rep fast and controlled."
+            prescription: "1-2x2-3 per kant",
+            ballisticSkill: "Jerk",
+            ballisticPrescription: "2x2-3 per kant",
+            ballisticGuidance: "Windmill bereidt heup, romp en overheadpositie voor; jerk gebruikt die organisatie explosief."
           },
-          { block: "A1", exercise: "Chin-up", prescription: "3-6x6-12", role: "Focus main lift" },
+          { block: "A1", exercise: "Pull-up / chin-up", prescription: "3-6x6-12", role: "Focus main lift" },
           { block: "A2", exercise: "Double front squat", prescription: "2-3x8-12", role: "Main lift van squat" },
-          { block: "B1", exercise: "Double floor press", prescription: "2x8-12" },
-          { block: "B2", exercise: "Kickstand RDL", prescription: "2x8-12 per kant" },
-          { block: "C1", exercise: "Staggered row", prescription: "2-3x8-12 per kant", role: "Specialized pull" },
+          { block: "B1", exercise: "Single-arm floor press", prescription: "2x8-12 per kant" },
+          { block: "B2", exercise: "Kettlebell good morning", prescription: "2x8-12" },
+          { block: "C1", exercise: "Wide row", prescription: "2-3x8-12 per kant", role: "Specialized pull" },
           { block: "C2", exercise: "Cossack squat / side lunge", prescription: "2x6-12 per kant", role: "Tertiaire squat" }
         ]
       },
@@ -1540,15 +1540,15 @@
           {
             block: "Primer",
             exercise: "Bent press",
-            prescription: "1-2x1-3 per side",
+            prescription: "1-2x1-3 per kant",
             ballisticSkill: "Snatch",
-            ballisticPrescription: "2x3 per side",
-            ballisticGuidance: "Light technical practice. Stop before grip, breathing or technique deteriorates."
+            ballisticPrescription: "2x3 per kant",
+            ballisticGuidance: "Bent press organiseert overhead/rompcontrole; snatch vertaalt dit naar explosieve hinge-power."
           },
           { block: "A1", exercise: "Single-leg deadlift", prescription: "3-6x6-12 per kant", role: "Focus main lift" },
-          { block: "A2", exercise: "Military press", prescription: "2-3x8-12", role: "Main lift van push" },
+          { block: "A2", exercise: "Top-down press", prescription: "2-3x8-12", role: "Main lift van push" },
           { block: "B1", exercise: "Step-up", prescription: "2x8-12 per been" },
-          { block: "B2", exercise: "Single-arm row", prescription: "2x8-12 per kant" },
+          { block: "B2", exercise: "Kettlebell pullover", prescription: "2x10-15" },
           { block: "C1", exercise: "Hip thrust", prescription: "2-3x8-15", role: "Specialized hinge" },
           { block: "C2", exercise: "Overhead triceps extension", prescription: "2x10-15", role: "Tertiaire push" }
         ]
@@ -2147,7 +2147,7 @@
       if (template.block === "C1") {
         return "2x8-12" + sideSuffix;
       }
-      if (template.exercise === "Double clean" || template.exercise === "Cossack squat / side lunge") {
+      if (template.exercise === "Double high pull" || template.exercise === "Cossack squat / side lunge") {
         return original;
       }
       return "2x10-15" + sideSuffix;
@@ -2199,6 +2199,20 @@
       return state.history.find((item) => item.type !== "skip" && item.sessionType === sessionType) || null;
     }
 
+    function getCompletedSessionsNewestFirst() {
+      return state.history
+        .filter((item) => item.type !== "skip")
+        .slice()
+        .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+    }
+
+    function getCalendarDayDistance(newerValue, olderValue) {
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const newer = getLocalDayStart(newerValue);
+      const older = getLocalDayStart(olderValue);
+      return Math.floor((newer - older) / msPerDay);
+    }
+
     function isTrainingSessionType(sessionType) {
       return sessionType === "strength" || sessionType === "zone2" || sessionType === "hiit";
     }
@@ -2225,6 +2239,96 @@
       return count;
     }
 
+    function getTrainingBlockLengthSinceLastRecovery() {
+      const sessions = getCompletedSessionsNewestFirst();
+      if (!sessions.length) {
+        return 0;
+      }
+
+      const newestSession = sessions[0];
+      if (isRecoverySessionType(newestSession.sessionType) || getDaysSinceDate(newestSession.completedAt) > 1) {
+        return 0;
+      }
+
+      return getTrainingBlocksNewestFirst()[0] || 0;
+    }
+
+    function getTrainingBlocksNewestFirst() {
+      const sessions = getCompletedSessionsNewestFirst();
+      const blocks = [];
+      let currentBlockLength = 0;
+      let newerSession = null;
+
+      for (const session of sessions) {
+        if (newerSession && getCalendarDayDistance(newerSession.completedAt, session.completedAt) > 1) {
+          if (currentBlockLength) {
+            blocks.push(currentBlockLength);
+            currentBlockLength = 0;
+          }
+        }
+
+        if (isRecoverySessionType(session.sessionType)) {
+          if (currentBlockLength) {
+            blocks.push(currentBlockLength);
+            currentBlockLength = 0;
+          }
+          newerSession = session;
+          continue;
+        }
+
+        if (isTrainingSessionType(session.sessionType)) {
+          currentBlockLength += 1;
+        }
+
+        newerSession = session;
+      }
+
+      if (currentBlockLength) {
+        blocks.push(currentBlockLength);
+      }
+
+      return blocks;
+    }
+
+    function getPreviousCompletedTrainingBlockLength() {
+      const sessions = getCompletedSessionsNewestFirst();
+      if (!sessions.length) {
+        return 0;
+      }
+
+      const blocks = getTrainingBlocksNewestFirst();
+      const newestSession = sessions[0];
+      const newestSessionDistance = getDaysSinceDate(newestSession.completedAt);
+      const newestSessionIsPastOpenBlock = newestSessionDistance > 1;
+      const hasTwoOrMoreEmptyDaysSinceLastLog = newestSessionDistance > 2;
+
+      if (hasTwoOrMoreEmptyDaysSinceLastLog) {
+        return 0;
+      }
+
+      if (isRecoverySessionType(newestSession.sessionType) || newestSessionIsPastOpenBlock) {
+        return blocks[0] || 0;
+      }
+
+      let newerSession = sessions[0];
+      for (let index = 1; index < sessions.length; index += 1) {
+        const olderSession = sessions[index];
+        const distance = getCalendarDayDistance(newerSession.completedAt, olderSession.completedAt);
+
+        if (distance > 1) {
+          return distance > 2 ? 0 : (blocks[1] || 0);
+        }
+
+        if (isRecoverySessionType(olderSession.sessionType)) {
+          return blocks[1] || 0;
+        }
+
+        newerSession = olderSession;
+      }
+
+      return blocks[1] || 0;
+    }
+
     function getConsecutiveTrainingDaysEndingDaysAgo(endDaysAgo) {
       let count = 0;
       let cursor = endDaysAgo;
@@ -2238,41 +2342,25 @@
     }
 
     function getCurrentTrainingBlockTarget() {
-      const currentStreakLength = getConsecutiveTrainingDaysEndingDaysAgo(1);
-      if (!currentStreakLength) {
-        return 3;
-      }
-
-      const boundaryDaysAgo = currentStreakLength + 1;
-      const boundarySession = getSessionLoggedDaysAgo(boundaryDaysAgo);
-
-      if (!boundarySession || !isRecoverySessionType(boundarySession.sessionType)) {
-        return 3;
-      }
-
-      const previousBlockLength = getConsecutiveTrainingDaysEndingDaysAgo(boundaryDaysAgo + 1);
+      const previousBlockLength = getPreviousCompletedTrainingBlockLength();
       return previousBlockLength >= 3 ? 2 : 3;
     }
 
     function getBaseSessionTypeFromHistory() {
       const yesterdaySession = getSessionLoggedDaysAgo(1);
-      const trainedYesterday = !!(yesterdaySession && isTrainingSessionType(yesterdaySession.sessionType));
+      const trainedStrengthYesterday = !!(yesterdaySession && yesterdaySession.sessionType === "strength");
+      const currentBlockLength = getTrainingBlockLengthSinceLastRecovery();
+      const blockTarget = getCurrentTrainingBlockTarget();
 
       if (countTrainingDaysInLastDays(7) >= 5) {
         return "recovery";
       }
 
-      if (!trainedYesterday) {
-        return "strength";
-      }
-
-      const streakLength = getConsecutiveTrainingDaysEndingDaysAgo(1);
-      const streakTarget = getCurrentTrainingBlockTarget();
-      if (streakLength >= streakTarget) {
+      if (currentBlockLength >= blockTarget) {
         return "recovery";
       }
 
-      if (yesterdaySession.sessionType !== "strength") {
+      if (!trainedStrengthYesterday) {
         return "strength";
       }
 
